@@ -1,0 +1,36 @@
+{
+  ".fade": {
+    "$type": "gradient",
+    "$value": {
+      "type": "linear",
+      "angle": 90,
+      "stops": [
+        {
+          "color": "#fefeff00",
+          "position": 0
+        },
+        {
+          "color": "{System.Surface.Background}",
+          "position": 0.55
+        }
+      ]
+    }
+  },
+  "fade2": {
+    "$type": "gradient",
+    "$value": {
+      "type": "linear",
+      "angle": 90,
+      "stops": [
+        {
+          "color": "#12121300",
+          "position": 0
+        },
+        {
+          "color": "{System.Surface.Background}",
+          "position": 0.55
+        }
+      ]
+    }
+  }
+}

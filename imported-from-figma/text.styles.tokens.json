@@ -1,0 +1,434 @@
+{
+  "Heading": {
+    "H1 - Hero Headline": {
+      "$type": "typography",
+      "$description": "Homepage Headline",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "56px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "120%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "H2 - Page Heading": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "32px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "120%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "H3 - Section Heading": {
+      "$type": "typography",
+      "$description": "Section and Forms Heading",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "24px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "120%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "H4 - Subsection Heading": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "18px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "130%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "H5 - Small Title": {
+      "$type": "typography",
+      "$description": "Former \"Form Label\" -> Please use UI Label Medium for form labels or buttons",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "14px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "110%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "H6 - Tagline": {
+      "$type": "typography",
+      "$description": "Former \"Tiny UI Label\" -> Please use UI Label Small for labels",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "12px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "130%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    }
+  },
+  "Body": {
+    "L": {
+      "Regular": {
+        "$type": "typography",
+        "$description": "Body on landing pages, use it with H3+ headings",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "18px",
+          "fontWeight": 400,
+          "letterSpacing": "0px",
+          "lineHeight": "150%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      },
+      "Strong": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "18px",
+          "fontWeight": 500,
+          "letterSpacing": "0%",
+          "lineHeight": "150%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      }
+    },
+    "M": {
+      "Regular": {
+        "$type": "typography",
+        "$description": "Copy text (default size)",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "16px",
+          "fontWeight": 400,
+          "letterSpacing": "0px",
+          "lineHeight": "150%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      },
+      "Strong": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "16px",
+          "fontWeight": 500,
+          "letterSpacing": "0%",
+          "lineHeight": "150%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      }
+    },
+    "S": {
+      "Regular": {
+        "$type": "typography",
+        "$description": "Small body text size",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "14px",
+          "fontWeight": 400,
+          "letterSpacing": "0%",
+          "lineHeight": "150%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      },
+      "Strong": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "14px",
+          "fontWeight": 600,
+          "letterSpacing": "0%",
+          "lineHeight": "150%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      }
+    },
+    "XS": {
+      "Regular": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "12px",
+          "fontWeight": 400,
+          "letterSpacing": "0%",
+          "lineHeight": "150%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      },
+      "Strong": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "12px",
+          "fontWeight": 500,
+          "letterSpacing": "0%",
+          "lineHeight": "150%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      }
+    }
+  },
+  "UI-Label": {
+    "M": {
+      "Regular": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "16px",
+          "fontWeight": 400,
+          "letterSpacing": "0%",
+          "lineHeight": "120%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      },
+      "Strong": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "16px",
+          "fontWeight": 600,
+          "letterSpacing": "0px",
+          "lineHeight": "120%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      }
+    },
+    "S": {
+      "Regular": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "14px",
+          "fontWeight": 400,
+          "letterSpacing": "0px",
+          "lineHeight": "120%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      },
+      "Strong": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "14px",
+          "fontWeight": 600,
+          "letterSpacing": "0px",
+          "lineHeight": "120%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      }
+    },
+    "XS": {
+      "Regular": {
+        "$type": "typography",
+        "$description": "Tiny UI Label",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "12px",
+          "fontWeight": 400,
+          "letterSpacing": "0px",
+          "lineHeight": "120%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      },
+      "Strong": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Inter",
+          "fontSize": "12px",
+          "fontWeight": 600,
+          "letterSpacing": "0px",
+          "lineHeight": "120%",
+          "textTransform": "none",
+          "textDecoration": "none"
+        }
+      }
+    }
+  },
+  "Uppercase": {
+    "S": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "13px",
+        "fontWeight": 500,
+        "letterSpacing": "0.75px",
+        "lineHeight": "130%",
+        "textTransform": "uppercase",
+        "textDecoration": "none"
+      }
+    },
+    "XS": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "11px",
+        "fontWeight": 500,
+        "letterSpacing": "0.5px",
+        "lineHeight": "130%",
+        "textTransform": "uppercase",
+        "textDecoration": "none"
+      }
+    }
+  },
+  "Code": {
+    "Regular": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Fira Code",
+        "fontSize": "12px",
+        "fontWeight": 400,
+        "letterSpacing": "0px",
+        "lineHeight": "140%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "Medium": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Fira Code",
+        "fontSize": "12px",
+        "fontWeight": 500,
+        "letterSpacing": "0px",
+        "lineHeight": "140%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    }
+  },
+  "Link (hover)": {
+    "S": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "12px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "120%",
+        "textTransform": "none",
+        "textDecoration": "underline"
+      }
+    },
+    "M": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "14px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "120%",
+        "textTransform": "none",
+        "textDecoration": "underline"
+      }
+    },
+    "L": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "16px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "120%",
+        "textTransform": "none",
+        "textDecoration": "underline"
+      }
+    }
+  },
+  "Chat": {
+    "Heading1": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "32px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "115%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "Heading2": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "28px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "115%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "Heading3": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "25px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "115%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "Heading4": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "22px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "115%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "Heading5": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "20px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "115%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    },
+    "Heading6": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": "18px",
+        "fontWeight": 600,
+        "letterSpacing": "0px",
+        "lineHeight": "115%",
+        "textTransform": "none",
+        "textDecoration": "none"
+      }
+    }
+  }
+}

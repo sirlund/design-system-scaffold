@@ -104,6 +104,123 @@ Builds React components from Figma designs using your tokens.
 - Storybook stories with all variants
 - Accessibility features (ARIA, keyboard navigation)
 
+## Token Transformation
+
+The scaffold includes intelligent token transformation that follows industry best practices from Atlassian, Carbon, and other leading design systems.
+
+### Industry-Standard Naming
+
+All semantic tokens automatically follow **category-first naming patterns**:
+
+```css
+/* ✅ Generated (industry standard) */
+--text-primary
+--text-secondary
+--text-disabled
+--background-surface
+--border-subtle
+
+/* ❌ Not generated (poor scannability) */
+--primary-text
+--secondary-text
+--disabled-text
+--surface-background
+--subtle-border
+```
+
+**Why category-first?**
+- Better IDE autocomplete (all text tokens group together)
+- Easier scanning and navigation
+- Matches Atlassian, Carbon, Chakra, and Material Design patterns
+- Aligns with CSS property categories (text, background, border)
+
+### Configuration-Driven
+
+All transformation behavior is controlled by `tokens.config.js`:
+
+```javascript
+module.exports = {
+  // Project identity
+  projectName: 'myapp',
+
+  // CSS variable prefixes (per tier)
+  cssPrefix: {
+    primitive: 'primitive',  // --primitive-green-05
+    semantic: '',            // --text-primary (no prefix)
+    component: 'c'           // --c-button-background
+  },
+
+  // Token reordering (follows Atlassian/Carbon patterns)
+  transformations: {
+    reorderSemanticTokens: true,  // primary-text → text-primary
+    categoryKeywords: ['text', 'background', 'border', 'surface', 'icon']
+  },
+
+  // Semantic token generation
+  generateSemantics: {
+    enabled: true,
+    strategy: 'manual'  // or 'auto'
+  }
+};
+```
+
+### Features
+
+**1. Automatic Classification**
+- Detects primitives vs semantics based on keywords and structure
+- Confidence levels: high, medium, low
+- Generates suggestion report (`.claude/reports/semantic-suggestions.md`)
+
+**2. Name Transformations**
+- Category-first reordering (configurable)
+- Redundancy removal
+- Consistent kebab-case output
+
+**3. Quality Audits**
+- Detects hardcoded values in semantic tokens
+- Identifies broken primitive references
+- Flags missing primitive sources
+
+**4. Multi-Format Output**
+- TypeScript (with full type definitions)
+- CSS (with CSS custom properties)
+- JSON (for tooling integration)
+
+### Example Transformation
+
+**Input** (from Figma):
+```json
+{
+  "Text": {
+    "primaryBlackText": "#0f1709",
+    "secondaryText": "#7a7a7a"
+  }
+}
+```
+
+**Output** (TypeScript):
+```typescript
+export const colors = {
+  textPrimaryBlack: 'var(--text-primary-black)',
+  textSecondary: 'var(--text-secondary)'
+} as const;
+```
+
+**Output** (CSS):
+```css
+:root {
+  --text-primary-black: var(--primitive-base-black);
+  --text-secondary: var(--primitive-grey-08);
+}
+```
+
+### Semantic Suggestions
+
+After transformation, review `.claude/reports/semantic-suggestions.md` for:
+- Tokens that should reference primitives instead of hardcoded values
+- Recommended primitive matches
+- Confidence levels for each suggestion
+
 ## Project Structure
 
 ```
@@ -113,12 +230,15 @@ design-system-scaffold/
 │   ├── .claude/             # AI agent instructions
 │   │   ├── agents/          # Agent behavior definitions
 │   │   ├── commands/        # Slash commands
+│   │   ├── reports/         # Generated analysis reports
 │   │   └── templates/       # Code generation templates
 │   ├── components/          # React components (generated)
-│   ├── figma-tokens/        # Design tokens (generated)
+│   ├── primitive-tokens/    # Primitive tokens (generated)
+│   ├── semantic-tokens/     # Semantic tokens (generated)
 │   └── Introduction.mdx     # Storybook welcome page
 ├── imported-from-figma/     # Figma JSON exports (place here)
-├── scaffold.config.js       # Configuration (edit this!)
+├── tokens.config.js         # Token transformation config (edit this!)
+├── scaffold.config.js       # Component generation config
 └── package.json
 ```
 

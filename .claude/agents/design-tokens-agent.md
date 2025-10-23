@@ -721,8 +721,11 @@ Save to: `{audit.reportDir}/token-audit-{YYYY-MM-DD}.md`
 ### Configuration
 - `tokens.config.js` - Project-specific configuration (source of truth)
 
-### Transformation Script
-- `scripts/transform-figma-tokens.js` - Figma JSON → Primitives generator
+### Transformation Scripts
+- `scripts/universal-token-parser.js` - **CURRENT**: Universal token parser supporting ANY JSON format (W3C, Tokens Studio, Style Dictionary, simple)
+- `scripts/transform-figma-tokens.js` - DEPRECATED: Legacy Figma JSON → Primitives generator (use universal parser instead)
+- `scripts/transform-w3c-tokens.js` - DEPRECATED: Legacy W3C-specific parser (use universal parser instead)
+- `scripts/w3c-token-parser.js` - DEPRECATED: Legacy W3C parser utility (use universal parser instead)
 
 ### Primitive Tokens (Auto-generated)
 - `{config.outputDir}/colors/colors.ts` + `colors.css`

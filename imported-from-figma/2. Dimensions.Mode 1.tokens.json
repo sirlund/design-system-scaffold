@@ -1,0 +1,140 @@
+{
+  "Gap": {
+    "none": {
+      "$type": "dimension",
+      "$value": "{scale.0}"
+    },
+    "3XS": {
+      "$type": "dimension",
+      "$value": "{scale.25_(2px)}"
+    },
+    "2XS": {
+      "$type": "dimension",
+      "$value": "{scale.50_(4px)}"
+    },
+    "XS": {
+      "$type": "dimension",
+      "$value": "{scale.100_(8px)}"
+    },
+    "S": {
+      "$type": "dimension",
+      "$value": "{scale.150_(12px)}"
+    },
+    "M": {
+      "$type": "dimension",
+      "$value": "{scale.200_(16px)}"
+    },
+    "L": {
+      "$type": "dimension",
+      "$value": "{scale.250_(20px)}"
+    },
+    "XL": {
+      "$type": "dimension",
+      "$value": "{scale.300_(24px)}"
+    },
+    "2XL": {
+      "$type": "dimension",
+      "$value": "{scale.400_(32px)}"
+    },
+    "3XL": {
+      "$type": "dimension",
+      "$value": "{scale.500_(40px)}"
+    },
+    "4XL": {
+      "$type": "dimension",
+      "$value": "{scale.600_(48px)}"
+    },
+    "5XL": {
+      "$type": "dimension",
+      "$value": "{scale.700_(56px)}"
+    },
+    "6XL": {
+      "$type": "dimension",
+      "$value": "{scale.800_(64px)}"
+    },
+    "7XL": {
+      "$type": "dimension",
+      "$value": "{scale.1000_(80px)}"
+    }
+  },
+  "Radius": {
+    "none": {
+      "$type": "dimension",
+      "$value": "0px"
+    },
+    "XS": {
+      "$type": "dimension",
+      "$value": "{scale.50_(4px)}"
+    },
+    "S": {
+      "$type": "dimension",
+      "$value": "{scale.75_(6px)}"
+    },
+    "M": {
+      "$type": "dimension",
+      "$value": "{scale.100_(8px)}"
+    },
+    "L": {
+      "$type": "dimension",
+      "$value": "{scale.150_(12px)}"
+    },
+    "XL": {
+      "$type": "dimension",
+      "$value": "{scale.200_(16px)}"
+    },
+    "rounded": {
+      "$type": "dimension",
+      "$value": "9999px"
+    }
+  },
+  "Stroke": {
+    "none": {
+      "$type": "dimension",
+      "$value": "0px"
+    },
+    "thin": {
+      "$type": "dimension",
+      "$value": "1px"
+    },
+    "light": {
+      "$type": "dimension",
+      "$value": "1.25px"
+    },
+    "medium": {
+      "$type": "dimension",
+      "$value": "1.5px"
+    },
+    "large": {
+      "$type": "dimension",
+      "$value": "2px"
+    }
+  },
+  "MaxWidth": {
+    "Container": {
+      "Desktop_XL": {
+        "$type": "dimension",
+        "$value": "1980px"
+      },
+      "Desktop_LG": {
+        "$type": "dimension",
+        "$value": "1600px"
+      },
+      "Desktop": {
+        "$type": "dimension",
+        "$value": "1440px"
+      },
+      "Tablet-Landscape": {
+        "$type": "dimension",
+        "$value": "1024px"
+      },
+      "Tablet-Portrait": {
+        "$type": "dimension",
+        "$value": "768px"
+      },
+      "Mobile": {
+        "$type": "dimension",
+        "$value": "480px"
+      }
+    }
+  }
+}

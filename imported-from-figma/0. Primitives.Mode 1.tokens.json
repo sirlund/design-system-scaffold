@@ -1,0 +1,118 @@
+{
+  "scale": {
+    "0": {
+      "$type": "dimension",
+      "$value": "0px"
+    },
+    "12,5_(1px)": {
+      "$type": "dimension",
+      "$value": "1px"
+    },
+    "25_(2px)": {
+      "$type": "dimension",
+      "$value": "2px"
+    },
+    "50_(4px)": {
+      "$type": "dimension",
+      "$value": "4px"
+    },
+    "75_(6px)": {
+      "$type": "dimension",
+      "$value": "6px"
+    },
+    "100_(8px)": {
+      "$type": "dimension",
+      "$value": "8px"
+    },
+    "150_(12px)": {
+      "$type": "dimension",
+      "$value": "12px"
+    },
+    "175_(14px)": {
+      "$type": "dimension",
+      "$value": "14px"
+    },
+    "200_(16px)": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "250_(20px)": {
+      "$type": "dimension",
+      "$value": "20px"
+    },
+    "300_(24px)": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "400_(32px)": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "500_(40px)": {
+      "$type": "dimension",
+      "$value": "40px"
+    },
+    "600_(48px)": {
+      "$type": "dimension",
+      "$value": "48px"
+    },
+    "700_(56px)": {
+      "$type": "dimension",
+      "$value": "56px"
+    },
+    "800_(64px)": {
+      "$type": "dimension",
+      "$value": "64px"
+    },
+    "900_(72px)": {
+      "$type": "dimension",
+      "$value": "72px"
+    },
+    "1000_(80px)": {
+      "$type": "dimension",
+      "$value": "80px"
+    },
+    "2000_(160px)": {
+      "$type": "dimension",
+      "$value": "160px"
+    },
+    "2500_(200px)": {
+      "$type": "dimension",
+      "$value": "200px"
+    }
+  },
+  "type": {
+    "font-size": {
+      "XS": {
+        "$type": "dimension",
+        "$value": "{scale.150_(12px)}"
+      },
+      "S": {
+        "$type": "dimension",
+        "$value": "{scale.175_(14px)}"
+      },
+      "M": {
+        "$type": "dimension",
+        "$value": "{scale.200_(16px)}"
+      },
+      "L": {
+        "$type": "dimension",
+        "$value": "{scale.250_(20px)}"
+      },
+      "XL": {
+        "$type": "dimension",
+        "$value": "{scale.300_(24px)}"
+      }
+    },
+    "font-family": {
+      "default": {
+        "$type": "string",
+        "$value": "Inter"
+      },
+      "mono": {
+        "$type": "string",
+        "$value": "Fira Code"
+      }
+    }
+  }
+}

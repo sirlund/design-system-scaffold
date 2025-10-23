@@ -1,0 +1,289 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://your-domain.com/storybook-config.schema.json",
+  "title": "Storybook Configuration",
+  "description": "Configuration for automated Storybook story generation",
+  "type": "object",
+  "required": ["version", "meta", "layout", "stories"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Configuration version"
+    },
+    "meta": {
+      "type": "object",
+      "description": "Project metadata",
+      "required": ["projectName"],
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "description": "Name of the design system"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief description"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author or team name"
+        },
+        "documentation": {
+          "type": "string",
+          "format": "uri",
+          "description": "Documentation URL"
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "description": "Storybook layout configuration",
+      "properties": {
+        "introduction": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "title": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "sections": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["type", "title"],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["hero", "quick-start", "links", "info", "custom"]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "navigation": {
+          "type": "object",
+          "properties": {
+            "structure": {
+              "type": "string",
+              "enum": ["hierarchical", "flat", "custom"]
+            },
+            "groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "title", "order"],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "icon": {
+                    "type": "string"
+                  },
+                  "order": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "collapsed": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "stories": {
+      "type": "object",
+      "description": "Story generation configuration",
+      "properties": {
+        "designTokens": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "autoGenerate": {
+              "type": "boolean"
+            },
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "title", "path", "source"],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "subtitle": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "visualizationType": {
+                    "type": "string",
+                    "enum": [
+                      "color-swatch-grid",
+                      "color-swatch-categorized",
+                      "dimension-showcase",
+                      "radius-demo",
+                      "typography-scale",
+                      "custom"
+                    ]
+                  },
+                  "groupBy": {
+                    "type": "string"
+                  },
+                  "filter": {
+                    "type": "string"
+                  },
+                  "options": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "components": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "autoGenerate": {
+              "type": "boolean"
+            },
+            "path": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            },
+            "storyTemplates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name", "description"],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "layout": {
+                    "type": "string",
+                    "enum": ["centered", "padded", "fullscreen"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "onboarding": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "showWhenEmpty": {
+              "type": "boolean"
+            },
+            "title": {
+              "type": "string"
+            },
+            "messages": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "visualization": {
+      "type": "object",
+      "description": "Visual representation configuration"
+    },
+    "styling": {
+      "type": "object",
+      "description": "Styling and theming configuration",
+      "properties": {
+        "theme": {
+          "type": "object",
+          "properties": {
+            "primary": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "secondary": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            }
+          }
+        }
+      }
+    },
+    "behavior": {
+      "type": "object",
+      "description": "Agent behavior configuration",
+      "properties": {
+        "autoRegenerate": {
+          "type": "boolean",
+          "description": "Automatically regenerate stories when content changes"
+        },
+        "watchPaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Paths to watch for changes"
+        },
+        "detectContent": {
+          "type": "boolean",
+          "description": "Automatically detect available content"
+        },
+        "showPlaceholders": {
+          "type": "boolean",
+          "description": "Show placeholder content when tokens/components don't exist"
+        },
+        "gracefulDegradation": {
+          "type": "boolean",
+          "description": "Gracefully handle missing dependencies"
+        }
+      }
+    },
+    "advanced": {
+      "type": "object",
+      "description": "Advanced configuration options"
+    }
+  }
+}

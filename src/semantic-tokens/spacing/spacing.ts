@@ -1,0 +1,26 @@
+/**
+ * Auto-generated TypeScript tokens
+ * DO NOT EDIT MANUALLY
+ */
+
+export const semanticSpacing = {
+  'gap-none': '0px',
+  'gap-3xs': '2px',
+  'gap-2xs': '4px',
+  'gap-xs': '8px',
+  'gap-s': '12px',
+  'gap-m': '16px',
+  'gap-l': '20px',
+  'gap-xl': '24px',
+  'gap-2xl': '32px',
+  'gap-3xl': '40px',
+  'gap-4xl': '48px',
+  'gap-5xl': '56px',
+  'gap-6xl': '64px',
+  'gap-7xl': '80px',
+  'stroke-none': '0px',
+  'stroke-thin': '1px',
+  'stroke-light': '1.25px',
+  'stroke-medium': '1.5px',
+  'stroke-large': '2px',
+} as const;

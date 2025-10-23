@@ -1,0 +1,44 @@
+/**
+ * Auto-generated CSS Variables
+ * DO NOT EDIT MANUALLY
+ */
+
+:root {
+  --primitive-type-font-family-default: Inter;
+  --primitive-type-font-family-mono: Fira Code;
+  --primitive-fade: {"type":"linear","angle":90,"stops":[{"color":"#fefeff00","position":0},{"color":"{System.Surface.Background}","position":0.55}]};
+  --primitive-fade2: {"type":"linear","angle":90,"stops":[{"color":"#12121300","position":0},{"color":"{System.Surface.Background}","position":0.55}]};
+  --primitive-heading-h1-hero-headline: {"fontFamily":"Inter","fontSize":"56px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-heading-h2-page-heading: {"fontFamily":"Inter","fontSize":"32px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-heading-h3-section-heading: {"fontFamily":"Inter","fontSize":"24px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-heading-h4-subsection-heading: {"fontFamily":"Inter","fontSize":"18px","fontWeight":600,"letterSpacing":"0px","lineHeight":"130%","textTransform":"none","textDecoration":"none"};
+  --primitive-heading-h5-small-title: {"fontFamily":"Inter","fontSize":"14px","fontWeight":600,"letterSpacing":"0px","lineHeight":"110%","textTransform":"none","textDecoration":"none"};
+  --primitive-heading-h6-tagline: {"fontFamily":"Inter","fontSize":"12px","fontWeight":600,"letterSpacing":"0px","lineHeight":"130%","textTransform":"none","textDecoration":"none"};
+  --primitive-body-l-regular: {"fontFamily":"Inter","fontSize":"18px","fontWeight":400,"letterSpacing":"0px","lineHeight":"150%","textTransform":"none","textDecoration":"none"};
+  --primitive-body-l-strong: {"fontFamily":"Inter","fontSize":"18px","fontWeight":500,"letterSpacing":"0%","lineHeight":"150%","textTransform":"none","textDecoration":"none"};
+  --primitive-body-m-regular: {"fontFamily":"Inter","fontSize":"16px","fontWeight":400,"letterSpacing":"0px","lineHeight":"150%","textTransform":"none","textDecoration":"none"};
+  --primitive-body-m-strong: {"fontFamily":"Inter","fontSize":"16px","fontWeight":500,"letterSpacing":"0%","lineHeight":"150%","textTransform":"none","textDecoration":"none"};
+  --primitive-body-s-regular: {"fontFamily":"Inter","fontSize":"14px","fontWeight":400,"letterSpacing":"0%","lineHeight":"150%","textTransform":"none","textDecoration":"none"};
+  --primitive-body-s-strong: {"fontFamily":"Inter","fontSize":"14px","fontWeight":600,"letterSpacing":"0%","lineHeight":"150%","textTransform":"none","textDecoration":"none"};
+  --primitive-body-xs-regular: {"fontFamily":"Inter","fontSize":"12px","fontWeight":400,"letterSpacing":"0%","lineHeight":"150%","textTransform":"none","textDecoration":"none"};
+  --primitive-body-xs-strong: {"fontFamily":"Inter","fontSize":"12px","fontWeight":500,"letterSpacing":"0%","lineHeight":"150%","textTransform":"none","textDecoration":"none"};
+  --primitive-ui-label-m-regular: {"fontFamily":"Inter","fontSize":"16px","fontWeight":400,"letterSpacing":"0%","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-ui-label-m-strong: {"fontFamily":"Inter","fontSize":"16px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-ui-label-s-regular: {"fontFamily":"Inter","fontSize":"14px","fontWeight":400,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-ui-label-s-strong: {"fontFamily":"Inter","fontSize":"14px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-ui-label-xs-regular: {"fontFamily":"Inter","fontSize":"12px","fontWeight":400,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-ui-label-xs-strong: {"fontFamily":"Inter","fontSize":"12px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"none"};
+  --primitive-uppercase-s: {"fontFamily":"Inter","fontSize":"13px","fontWeight":500,"letterSpacing":"0.75px","lineHeight":"130%","textTransform":"uppercase","textDecoration":"none"};
+  --primitive-uppercase-xs: {"fontFamily":"Inter","fontSize":"11px","fontWeight":500,"letterSpacing":"0.5px","lineHeight":"130%","textTransform":"uppercase","textDecoration":"none"};
+  --primitive-code-regular: {"fontFamily":"Fira Code","fontSize":"12px","fontWeight":400,"letterSpacing":"0px","lineHeight":"140%","textTransform":"none","textDecoration":"none"};
+  --primitive-code-medium: {"fontFamily":"Fira Code","fontSize":"12px","fontWeight":500,"letterSpacing":"0px","lineHeight":"140%","textTransform":"none","textDecoration":"none"};
+  --primitive-link-s: {"fontFamily":"Inter","fontSize":"12px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"underline"};
+  --primitive-link-m: {"fontFamily":"Inter","fontSize":"14px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"underline"};
+  --primitive-link-l: {"fontFamily":"Inter","fontSize":"16px","fontWeight":600,"letterSpacing":"0px","lineHeight":"120%","textTransform":"none","textDecoration":"underline"};
+  --primitive-chat-heading1: {"fontFamily":"Inter","fontSize":"32px","fontWeight":600,"letterSpacing":"0px","lineHeight":"115%","textTransform":"none","textDecoration":"none"};
+  --primitive-chat-heading2: {"fontFamily":"Inter","fontSize":"28px","fontWeight":600,"letterSpacing":"0px","lineHeight":"115%","textTransform":"none","textDecoration":"none"};
+  --primitive-chat-heading3: {"fontFamily":"Inter","fontSize":"25px","fontWeight":600,"letterSpacing":"0px","lineHeight":"115%","textTransform":"none","textDecoration":"none"};
+  --primitive-chat-heading4: {"fontFamily":"Inter","fontSize":"22px","fontWeight":600,"letterSpacing":"0px","lineHeight":"115%","textTransform":"none","textDecoration":"none"};
+  --primitive-chat-heading5: {"fontFamily":"Inter","fontSize":"20px","fontWeight":600,"letterSpacing":"0px","lineHeight":"115%","textTransform":"none","textDecoration":"none"};
+  --primitive-chat-heading6: {"fontFamily":"Inter","fontSize":"18px","fontWeight":600,"letterSpacing":"0px","lineHeight":"115%","textTransform":"none","textDecoration":"none"};
+}

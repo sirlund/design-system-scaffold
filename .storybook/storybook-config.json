@@ -1,0 +1,382 @@
+{
+  "$schema": "./storybook-config.schema.json",
+  "version": "1.0.0",
+  "meta": {
+    "projectName": "Design System Scaffold",
+    "description": "A modern design system built with React, TypeScript, and Storybook",
+    "author": "Your Team",
+    "documentation": "https://your-docs-url.com"
+  },
+  "layout": {
+    "introduction": {
+      "enabled": true,
+      "title": "Welcome to Your Design System",
+      "subtitle": "Build consistent, accessible experiences",
+      "sections": [
+        {
+          "type": "hero",
+          "title": "🚀 Getting Started",
+          "content": "Your design system scaffold is ready! Extract tokens from Figma and start building components."
+        },
+        {
+          "type": "quick-start",
+          "title": "Quick Start Guide",
+          "steps": [
+            {
+              "number": 1,
+              "title": "Extract Design Tokens",
+              "command": "/tokens-from-figma https://figma.com/file/YOUR_FILE_ID",
+              "description": "Pull colors, spacing, typography, and more from your Figma file"
+            },
+            {
+              "number": 2,
+              "title": "Review Generated Tokens",
+              "description": "Browse primitive and semantic tokens in the Design Tokens section"
+            },
+            {
+              "number": 3,
+              "title": "Generate Components",
+              "command": "/component-from-figma button",
+              "description": "Create React components from your Figma designs"
+            }
+          ]
+        },
+        {
+          "type": "links",
+          "title": "Useful Links",
+          "links": [
+            {
+              "label": "Documentation",
+              "url": "https://docs.claude.com/en/docs/claude-code"
+            },
+            {
+              "label": "GitHub",
+              "url": "https://github.com/your-org/design-system"
+            },
+            {
+              "label": "Figma File",
+              "url": "https://figma.com/file/YOUR_FILE_ID"
+            }
+          ]
+        }
+      ]
+    },
+    "navigation": {
+      "structure": "hierarchical",
+      "groups": [
+        {
+          "id": "introduction",
+          "title": "Introduction",
+          "icon": "📚",
+          "order": 1
+        },
+        {
+          "id": "design-tokens",
+          "title": "Design Tokens",
+          "icon": "🎨",
+          "order": 2,
+          "collapsed": false
+        },
+        {
+          "id": "components",
+          "title": "Components",
+          "icon": "🧩",
+          "order": 3,
+          "collapsed": false
+        },
+        {
+          "id": "patterns",
+          "title": "Patterns",
+          "icon": "📐",
+          "order": 4,
+          "collapsed": true
+        },
+        {
+          "id": "guidelines",
+          "title": "Guidelines",
+          "icon": "📖",
+          "order": 5,
+          "collapsed": true
+        }
+      ]
+    }
+  },
+  "stories": {
+    "designTokens": {
+      "enabled": true,
+      "autoGenerate": true,
+      "categories": [
+        {
+          "id": "primitive-colors",
+          "title": "Colors",
+          "subtitle": "Base color palette",
+          "path": "Design Tokens/Primitive/Colors",
+          "source": "src/primitive-tokens/colors",
+          "visualizationType": "color-swatch-grid",
+          "groupBy": "color-family",
+          "sortOrder": ["red", "orange", "yellow", "green", "blue", "purple", "grey", "black", "white"],
+          "options": {
+            "showHex": true,
+            "showRgb": false,
+            "showCssVar": true,
+            "cardStyle": "elevated",
+            "columns": "auto-fill"
+          }
+        },
+        {
+          "id": "semantic-colors",
+          "title": "Semantic Colors",
+          "subtitle": "Purpose-driven color tokens",
+          "path": "Design Tokens/Semantic/Colors",
+          "source": "src/semantic-tokens/colors",
+          "visualizationType": "color-swatch-categorized",
+          "groupBy": "semantic-category",
+          "categories": ["Primary", "Accent", "Content", "Surface", "Stroke", "Icon", "Feedback"],
+          "options": {
+            "showHex": true,
+            "showPrimitiveReference": true,
+            "showCssVar": true,
+            "cardStyle": "elevated"
+          }
+        },
+        {
+          "id": "spacing",
+          "title": "Spacing & Dimensions",
+          "subtitle": "Scale, gaps, radius, and more",
+          "path": "Design Tokens/Primitive/Spacing",
+          "source": "src/primitive-tokens/spacing",
+          "visualizationType": "dimension-showcase",
+          "groupBy": "dimension-type",
+          "groups": ["scale", "gap", "radius", "stroke", "typography", "containers"],
+          "options": {
+            "showPixelValue": true,
+            "showCssVar": true,
+            "showVisualRepresentation": true,
+            "cardStyle": "elevated"
+          }
+        },
+        {
+          "id": "radius",
+          "title": "Border Radius",
+          "subtitle": "Rounded corner values",
+          "path": "Design Tokens/Radius",
+          "source": "src/primitive-tokens/spacing",
+          "filter": "radius",
+          "visualizationType": "radius-demo",
+          "options": {
+            "showPixelValue": true,
+            "showCssVar": true,
+            "demoShape": "square",
+            "demoSize": "80px",
+            "cardStyle": "elevated"
+          }
+        },
+        {
+          "id": "typography",
+          "title": "Typography",
+          "subtitle": "Font sizes, weights, and families",
+          "path": "Design Tokens/Typography",
+          "source": "src/primitive-tokens/typography",
+          "visualizationType": "typography-scale",
+          "options": {
+            "showFontSize": true,
+            "showLineHeight": true,
+            "showFontWeight": true,
+            "showSampleText": true,
+            "sampleText": "The quick brown fox jumps over the lazy dog",
+            "cardStyle": "minimal"
+          }
+        }
+      ]
+    },
+    "components": {
+      "enabled": true,
+      "autoGenerate": true,
+      "path": "Components",
+      "source": "src/components",
+      "options": {
+        "showProps": true,
+        "showVariants": true,
+        "showStates": true,
+        "showAccessibility": true,
+        "showCode": true,
+        "layout": "centered"
+      },
+      "storyTemplates": [
+        {
+          "name": "Default",
+          "description": "Basic component with default props"
+        },
+        {
+          "name": "AllVariants",
+          "description": "Showcase all variant combinations",
+          "layout": "padded"
+        },
+        {
+          "name": "AllSizes",
+          "description": "Show all size options",
+          "layout": "padded"
+        },
+        {
+          "name": "AllStates",
+          "description": "Display all interactive states",
+          "layout": "padded"
+        },
+        {
+          "name": "CompleteMatrix",
+          "description": "Full matrix of all combinations",
+          "layout": "fullscreen"
+        }
+      ]
+    },
+    "onboarding": {
+      "enabled": true,
+      "showWhenEmpty": true,
+      "title": "Get Started",
+      "messages": {
+        "noTokens": {
+          "title": "No Design Tokens Yet",
+          "description": "Extract design tokens from your Figma file to get started.",
+          "command": "/tokens-from-figma https://figma.com/file/YOUR_FILE_ID",
+          "icon": "🎨",
+          "benefits": [
+            "Automatic token extraction from Figma",
+            "Primitive and semantic token categories",
+            "CSS variables and TypeScript definitions",
+            "Live preview in Storybook"
+          ]
+        },
+        "noComponents": {
+          "title": "No Components Yet",
+          "description": "Generate React components from your Figma designs.",
+          "command": "/component-from-figma button",
+          "icon": "🧩",
+          "benefits": [
+            "Production-ready React components",
+            "Full TypeScript support",
+            "Design token integration",
+            "Comprehensive Storybook stories"
+          ]
+        },
+        "empty": {
+          "title": "Welcome to Your Design System",
+          "description": "Let's build something amazing together!",
+          "icon": "🚀",
+          "steps": [
+            "Extract design tokens from Figma",
+            "Review and organize your tokens",
+            "Generate components from Figma",
+            "Build consistent experiences"
+          ]
+        }
+      }
+    }
+  },
+  "visualization": {
+    "colorSwatchGrid": {
+      "cardStyle": "elevated",
+      "showLabels": true,
+      "showValues": true,
+      "showCssVars": true,
+      "hoverEffects": true,
+      "columns": {
+        "mobile": 2,
+        "tablet": 3,
+        "desktop": 4
+      }
+    },
+    "dimensionShowcase": {
+      "visualRepresentations": {
+        "scale": {
+          "type": "horizontal-bar",
+          "color": "#4F46E5"
+        },
+        "gap": {
+          "type": "horizontal-bar",
+          "color": "#4F46E5"
+        },
+        "radius": {
+          "type": "rounded-square",
+          "color": "#10B981",
+          "size": "80px"
+        },
+        "stroke": {
+          "type": "horizontal-line",
+          "color": "#EC4899"
+        },
+        "typography": {
+          "type": "font-sample",
+          "text": "Aa",
+          "color": "#F59E0B"
+        },
+        "containers": {
+          "type": "max-width-box",
+          "color": "#8B5CF6"
+        }
+      }
+    },
+    "typography": {
+      "sampleText": "The quick brown fox jumps over the lazy dog",
+      "showMetrics": true,
+      "showFontFamily": true
+    }
+  },
+  "styling": {
+    "theme": {
+      "primary": "#4F46E5",
+      "secondary": "#10B981",
+      "background": "#FFFFFF",
+      "text": "#121213",
+      "textSecondary": "#6d6d6e",
+      "border": "#eaeaea",
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444",
+      "info": "#3B82F6"
+    },
+    "typography": {
+      "fontFamily": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "monospaceFontFamily": "'Fira Code', 'Courier New', monospace"
+    },
+    "spacing": {
+      "cardPadding": "16px",
+      "sectionSpacing": "40px",
+      "gridGap": "20px"
+    },
+    "borderRadius": {
+      "small": "4px",
+      "medium": "8px",
+      "large": "12px"
+    },
+    "shadows": {
+      "card": "0 1px 3px rgba(0, 0, 0, 0.06)",
+      "cardHover": "0 4px 12px rgba(0, 0, 0, 0.12)"
+    }
+  },
+  "behavior": {
+    "autoRegenerate": true,
+    "watchPaths": [
+      "src/primitive-tokens/**/*",
+      "src/semantic-tokens/**/*",
+      "src/components/**/*"
+    ],
+    "detectContent": true,
+    "showPlaceholders": true,
+    "gracefulDegradation": true
+  },
+  "advanced": {
+    "customTemplates": {
+      "enabled": false,
+      "path": ".storybook/templates"
+    },
+    "plugins": {
+      "enabled": false,
+      "path": ".storybook/plugins"
+    },
+    "hooks": {
+      "beforeGenerate": null,
+      "afterGenerate": null,
+      "onContentDetected": null
+    }
+  }
+}

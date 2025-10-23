@@ -1,0 +1,14 @@
+/**
+ * Auto-generated TypeScript tokens
+ * DO NOT EDIT MANUALLY
+ */
+
+export const primitiveShadows = {
+  'testshadow': [{"offsetX":"0px","offsetY":"1px","blur":"2px","spread":"0px","color":"#0000001a"},{"offsetX":"0px","offsetY":"4px","blur":"4px","spread":"0px","color":"#00000017"},{"offsetX":"0px","offsetY":"10px","blur":"6px","spread":"0px","color":"#0000000d"},{"offsetX":"0px","offsetY":"17px","blur":"7px","spread":"0px","color":"#00000003"},{"offsetX":"0px","offsetY":"27px","blur":"8px","spread":"0px","color":"#00000000"}],
+  'active': [{"offsetX":"0px","offsetY":"0px","blur":"0px","spread":"2px","color":"{System.Stroke.Default.(legacy).Medium}","inset":true},{"offsetX":"0px","offsetY":"0px","blur":"0px","spread":"1px","color":"{System.Primary.Inverted}","inset":true}],
+  'focus': [{"offsetX":"0px","offsetY":"0px","blur":"0px","spread":"3px","color":"#0069ff66"}],
+  'contextmenu': [{"backgroundBlur":true,"blur":"6px"},{"offsetX":"0px","offsetY":"0px","blur":"4px","spread":"0px","color":"#0000000a"},{"offsetX":"0px","offsetY":"4px","blur":"12px","spread":"0px","color":"#00000026"}],
+  'shadows-small': [{"offsetX":"0px","offsetY":"2px","blur":"4px","spread":"0px","color":"#00000026"},{"offsetX":"0px","offsetY":"0px","blur":"4px","spread":"0px","color":"#0000000a"}],
+  'shadows-medium': [{"offsetX":"0px","offsetY":"4px","blur":"12px","spread":"0px","color":"#00000026"},{"offsetX":"0px","offsetY":"0px","blur":"4px","spread":"0px","color":"#0000000a"}],
+  'shadows-large': [{"offsetX":"0px","offsetY":"8px","blur":"16px","spread":"0px","color":"#00000026"},{"offsetX":"0px","offsetY":"0px","blur":"4px","spread":"0px","color":"#0000000a"}],
+} as const;

@@ -1,6 +1,24 @@
 #!/usr/bin/env node
 
 /**
+ * DEPRECATED: Legacy Figma Token Transformer
+ *
+ * ⚠️  This script is DEPRECATED and will be removed in a future version.
+ *
+ * Please use the new universal token parser instead:
+ *   npm run tokens:transform
+ *
+ * Or directly:
+ *   node scripts/universal-token-parser.js imported-from-figma
+ *
+ * The universal parser supports ANY token JSON format:
+ * - W3C Design Tokens Community Group format
+ * - Tokens Studio (Figma Tokens) format
+ * - Style Dictionary format
+ * - Simple key-value formats
+ *
+ * ---
+ *
  * Transform Figma Exported Tokens to Primitive Tokens
  *
  * Reads JSON files from imported-from-figma/ and generates:
