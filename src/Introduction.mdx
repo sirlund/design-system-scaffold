@@ -1,0 +1,103 @@
+# Design System Scaffold
+
+**Universal design system generator - from Figma to production in minutes**
+
+---
+
+## Welcome
+
+This is a blank design system scaffold powered by AI agents. You can transform any Figma file into a complete, production-ready design system with:
+
+- ✅ **Design Tokens** (primitives + semantics)
+- ✅ **React Components** (TypeScript + CSS Modules)
+- ✅ **Storybook Documentation** (auto-generated)
+- ✅ **Type Safety** (full TypeScript support)
+
+---
+
+## Getting Started
+
+### Step 1: Connect to Figma
+
+Extract design tokens from your Figma file:
+
+```bash
+# Using Figma MCP (recommended)
+/tokens-from-figma https://figma.com/file/YOUR_FILE_ID
+
+# Or place JSON exports in imported-from-figma/
+# Then run: npm run tokens:transform
+```
+
+### Step 2: Generate Components
+
+Build React components from your Figma designs:
+
+```bash
+/component-from-figma button
+/component-from-figma card
+/component-from-figma input
+```
+
+### Step 3: Customize & Publish
+
+Review the generated code, customize as needed, and publish your design system:
+
+```bash
+npm run build
+npm publish
+```
+
+---
+
+## What's Next?
+
+Once you run the token extraction, you'll see:
+
+1. **Design Tokens** section with all your colors, spacing, typography, radius
+2. **Components** section with generated React components
+3. **Full documentation** with usage examples
+
+---
+
+## AI Agents Available
+
+This scaffold includes three AI agents:
+
+### Design Tokens Agent
+Extracts and transforms tokens from Figma exports
+
+**Commands**: `/tokens-from-figma`
+
+### Storybook Documentation Agent
+Generates beautiful documentation for your tokens and components
+
+**Auto-activated** after token generation
+
+### Component Builder Agent
+Builds React components from Figma designs using your tokens
+
+**Commands**: `/component-from-figma [name]`
+
+---
+
+## Configuration
+
+Edit `scaffold.config.js` to customize:
+
+- Token classification rules
+- Naming conventions
+- Output structure
+- Semantic token generation strategy
+
+---
+
+## Ready?
+
+Run `/tokens-from-figma` to get started!
+
+Or place your Figma JSON exports in the `imported-from-figma/` directory and the agents will detect them automatically.
+
+---
+
+**Need help?** Check the `.claude/` directory for agent documentation and examples.
