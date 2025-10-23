@@ -1,0 +1,27 @@
+/**
+ * Semantic Radius Tokens - CSS Custom Properties
+ * These define the PUBLIC API for border radius in your design system.
+ * Generated from: src/design-tokens/semantic-radius.ts
+ */
+
+:root {
+  /* Basic Radii */
+  --radius-none: var(--primitive-radius-0);
+  --radius-sm: var(--primitive-radius-2);
+  --radius-md: var(--primitive-radius-4);
+  --radius-lg: var(--primitive-radius-8);
+  --radius-xl: var(--primitive-radius-12);
+  --radius-full: var(--primitive-radius-9999);
+
+  /* Component-Specific Radii */
+  --radius-button: var(--primitive-radius-4);
+  --radius-button-sm: var(--primitive-radius-2);
+  --radius-button-lg: var(--primitive-radius-8);
+  --radius-input: var(--primitive-radius-4);
+  --radius-card: var(--primitive-radius-8);
+  --radius-modal: var(--primitive-radius-12);
+  --radius-badge: var(--primitive-radius-9999);
+  --radius-avatar: var(--primitive-radius-9999);
+  --radius-chip: var(--primitive-radius-9999);
+  --radius-tooltip: var(--primitive-radius-4);
+}

@@ -355,6 +355,79 @@ export * from './spacing/spacing';
 }
 
 /**
+ * Check if semantic tokens exist
+ */
+function checkSemanticTokens() {
+  const semanticDir = path.join(__dirname, '../src/design-tokens');
+  const semanticColorsPath = path.join(semanticDir, 'semantic-colors.ts');
+  const semanticSpacingPath = path.join(semanticDir, 'semantic-spacing.ts');
+  const semanticRadiusPath = path.join(semanticDir, 'semantic-radius.ts');
+
+  const hasSemanticColors = fs.existsSync(semanticColorsPath);
+  const hasSemanticSpacing = fs.existsSync(semanticSpacingPath);
+  const hasSemanticRadius = fs.existsSync(semanticRadiusPath);
+
+  return {
+    hasAll: hasSemanticColors && hasSemanticSpacing && hasSemanticRadius,
+    hasSemanticColors,
+    hasSemanticSpacing,
+    hasSemanticRadius,
+  };
+}
+
+/**
+ * Display semantic tokens guidance
+ */
+function displaySemanticGuidance(semanticStatus) {
+  if (semanticStatus.hasAll) {
+    console.log('\n✅ Semantic tokens found!');
+    console.log('   Review them in: src/design-tokens/');
+    console.log('   Update them to match your design system needs.');
+    return;
+  }
+
+  console.log('\n' + '═'.repeat(70));
+  console.log('📋 NEXT STEP: Create Semantic Tokens');
+  console.log('═'.repeat(70) + '\n');
+
+  console.log('Primitive tokens are the PRIVATE API (verbose, scale-based).');
+  console.log('Semantic tokens are the PUBLIC API (concise, intent-based).\n');
+
+  console.log('You should now create semantic tokens that reference these primitives:\n');
+
+  if (!semanticStatus.hasSemanticColors) {
+    console.log('  📄 src/design-tokens/semantic-colors.ts');
+    console.log('     - Brand colors (primary, secondary)');
+    console.log('     - Component colors (buttons, inputs, links)');
+    console.log('     - Feedback colors (success, error, warning, info)');
+    console.log('     - Surface colors (backgrounds, dividers)');
+    console.log('     - Text colors (primary, secondary, disabled)\n');
+  }
+
+  if (!semanticStatus.hasSemanticSpacing) {
+    console.log('  📄 src/design-tokens/semantic-spacing.ts');
+    console.log('     - Layout spacing (page gutter, section gap)');
+    console.log('     - Component spacing (padding, gaps, margins)');
+    console.log('     - Component sizes (buttons, inputs, icons)\n');
+  }
+
+  if (!semanticStatus.hasSemanticRadius) {
+    console.log('  📄 src/design-tokens/semantic-radius.ts');
+    console.log('     - Basic radii (sm, md, lg, full)');
+    console.log('     - Component radii (button, card, modal)\n');
+  }
+
+  console.log('Example semantic token:');
+  console.log('  ❌ DON\'T: buttonPrimary: \'#8ccc52\'  (hardcoded)');
+  console.log('  ✅ DO:    buttonPrimary: primitiveColors[\'green-06\']  (references primitive)\n');
+
+  console.log('After creating semantic tokens:');
+  console.log('  1. Create visualization stories in src/stories/');
+  console.log('  2. Use semantic tokens in your components');
+  console.log('  3. NEVER use primitive tokens directly in components\n');
+}
+
+/**
  * Main transformation
  */
 function main() {
@@ -368,10 +441,12 @@ function main() {
     generateIndex();
 
     console.log('\n' + '═'.repeat(50));
-    console.log('✅ Transformation complete!');
+    console.log('✅ Primitive tokens transformation complete!');
     console.log('\n📁 Files generated in: src/figma-tokens/');
-    console.log('\n⚠️  IMPORTANT: Update semantic tokens to reference these primitives!');
-    console.log('   Semantic tokens should NEVER have hardcoded values.\n');
+
+    // Check for semantic tokens and display guidance
+    const semanticStatus = checkSemanticTokens();
+    displaySemanticGuidance(semanticStatus);
 
   } catch (error) {
     console.error('❌ Error:', error.message);

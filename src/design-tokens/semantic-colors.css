@@ -1,0 +1,84 @@
+/**
+ * Semantic Color Tokens - CSS Custom Properties
+ * These define the PUBLIC API for your design system.
+ * Generated from: src/design-tokens/semantic-colors.ts
+ */
+
+:root {
+  /* Brand Colors */
+  --brand-primary: var(--primitive-green-06);
+  --brand-primary-light: var(--primitive-green-03);
+  --brand-primary-dark: var(--primitive-green-08);
+  --brand-secondary: var(--primitive-blue-02);
+  --brand-secondary-light: var(--primitive-blue-01);
+  --brand-secondary-dark: var(--primitive-blue-02);
+
+  /* Component Colors - Buttons */
+  --button-primary: var(--primitive-green-06);
+  --button-primary-hover: var(--primitive-green-07);
+  --button-primary-active: var(--primitive-green-08);
+  --button-primary-disabled: var(--primitive-grey-04);
+  --button-secondary: var(--primitive-blue-02);
+  --button-secondary-hover: var(--primitive-blue-01);
+  --button-secondary-active: var(--primitive-blue-02);
+
+  /* Component Colors - Inputs */
+  --input-border: var(--primitive-grey-04);
+  --input-border-focus: var(--primitive-green-06);
+  --input-border-error: var(--primitive-peach-02);
+  --input-background: var(--primitive-base-white);
+  --input-background-disabled: var(--primitive-grey-02);
+
+  /* Component Colors - Links */
+  --link-default: var(--primitive-blue-02);
+  --link-hover: var(--primitive-blue-01);
+  --link-visited: var(--primitive-purple-02);
+
+  /* Feedback Colors - Success */
+  --success: var(--primitive-green-07);
+  --success-light: var(--primitive-green-02);
+  --success-dark: var(--primitive-green-09);
+
+  /* Feedback Colors - Error */
+  --error: var(--primitive-peach-02);
+  --error-light: var(--primitive-peach-00);
+  --error-dark: var(--primitive-peach-02);
+
+  /* Feedback Colors - Warning */
+  --warning: var(--primitive-yellow-02);
+  --warning-light: var(--primitive-yellow-00);
+  --warning-dark: var(--primitive-yellow-02);
+
+  /* Feedback Colors - Info */
+  --info: var(--primitive-blue-02);
+  --info-light: var(--primitive-blue-00);
+  --info-dark: var(--primitive-blue-02);
+
+  /* Surface Colors */
+  --surface-background: var(--primitive-base-white);
+  --surface-background-alt: var(--primitive-grey-01);
+  --surface-background-elevated: var(--primitive-base-white);
+  --surface: var(--primitive-base-white);
+  --surface-alt: var(--primitive-grey-02);
+  --surface-hover: var(--primitive-grey-01);
+  --surface-overlay: var(--primitive-grey-10);
+  --surface-divider: var(--primitive-grey-04);
+
+  /* Text Colors */
+  --text-primary: var(--primitive-grey-10);
+  --text-secondary: var(--primitive-grey-07);
+  --text-tertiary: var(--primitive-grey-06);
+  --text-disabled: var(--primitive-grey-05);
+  --text-inverse: var(--primitive-base-white);
+  --text-on-primary: var(--primitive-base-white);
+  --text-on-secondary: var(--primitive-base-white);
+  --text-on-success: var(--primitive-base-white);
+  --text-on-error: var(--primitive-base-white);
+
+  /* Border Colors */
+  --border-default: var(--primitive-grey-04);
+  --border-subtle: var(--primitive-grey-03);
+  --border-strong: var(--primitive-grey-06);
+  --border-focus: var(--primitive-green-06);
+  --border-error: var(--primitive-peach-02);
+}
