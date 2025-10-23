@@ -114,15 +114,426 @@ function flattenTokens(data, prefix = '') {
 }
 
 /**
+ * Convert hex color to RGB object
+ */
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+/**
+ * Calculate color distance using simple Euclidean distance
+ * Good enough for basic color family matching
+ */
+function colorDistance(hex1, hex2) {
+  const rgb1 = hexToRgb(hex1);
+  const rgb2 = hexToRgb(hex2);
+  if (!rgb1 || !rgb2) return Infinity;
+
+  return Math.sqrt(
+    Math.pow(rgb1.r - rgb2.r, 2) +
+    Math.pow(rgb1.g - rgb2.g, 2) +
+    Math.pow(rgb1.b - rgb2.b, 2)
+  );
+}
+
+/**
+ * Find the closest primitive color to a given hex value
+ * Returns { name, distance } or null if no close match
+ */
+function findClosestPrimitive(hexValue, primitiveTokens, maxDistance = 30) {
+  let closestName = null;
+  let closestDistance = Infinity;
+
+  for (const [name, value] of Object.entries(primitiveTokens)) {
+    const distance = colorDistance(hexValue, value);
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestName = name;
+    }
+  }
+
+  // Only return if it's close enough
+  if (closestDistance <= maxDistance) {
+    return { name: closestName, distance: closestDistance };
+  }
+
+  return null;
+}
+
+/**
+ * Check if a color matches an existing palette (by analyzing similarity to palette colors)
+ * Returns true if the color is similar enough to be part of that palette
+ */
+function matchesExistingPalette(hexValue, paletteFamily, primitiveTokens, threshold = 80) {
+  const paletteColors = Object.entries(primitiveTokens)
+    .filter(([name]) => name.startsWith(`${paletteFamily}-`))
+    .map(([_, value]) => value);
+
+  if (paletteColors.length === 0) return false;
+
+  // Check if the new color is similar to any color in the palette
+  for (const paletteColor of paletteColors) {
+    const distance = colorDistance(hexValue, paletteColor);
+    if (distance < threshold) {
+      return true; // Color is similar to this palette
+    }
+  }
+
+  return false; // Color doesn't match this palette
+}
+
+/**
+ * Convert RGB to HSL for better color analysis
+ */
+function rgbToHsl(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0; // achromatic
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+
+  return {
+    h: h * 360,
+    s: s * 100,
+    l: l * 100
+  };
+}
+
+/**
+ * Get creative pure color name based on HSL analysis
+ * Returns names like: teal, azure, sky, coral, crimson, amber, etc.
+ * NO semantic words allowed (no info-blue, error-red, etc.)
+ */
+function getPureColorName(hexValues, existingPrimitives) {
+  // Analyze the mid-tone color (usually the "main" variant)
+  const mainHex = hexValues[Math.floor(hexValues.length / 2)];
+  const rgb = hexToRgb(mainHex);
+  if (!rgb) return 'unknown';
+
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  const { h, s, l } = hsl;
+
+  // Check if color already exists in primitives
+  const usedNames = Object.keys(existingPrimitives)
+    .map(name => name.split('-')[0])
+    .filter((name, index, self) => self.indexOf(name) === index);
+
+  // Helper to find available name from list
+  const findAvailable = (names) => {
+    for (const name of names) {
+      if (!usedNames.includes(name)) return name;
+    }
+    // If all used, return first with a number suffix
+    return names[0];
+  };
+
+  // Pure color naming based on hue ranges
+  // Red family (0-15, 345-360)
+  if (h < 15 || h >= 345) {
+    if (s < 30) return findAvailable(['rose', 'pink', 'blush']);
+    if (l > 70) return findAvailable(['coral', 'salmon', 'rose']);
+    if (l > 50) return findAvailable(['crimson', 'ruby', 'cherry']);
+    return findAvailable(['ruby', 'crimson', 'garnet']);
+  }
+
+  // Orange family (15-45)
+  if (h >= 15 && h < 45) {
+    if (l > 65) return findAvailable(['peach', 'apricot', 'cream']);
+    if (s > 70) return findAvailable(['tangerine', 'persimmon', 'tiger']);
+    return findAvailable(['amber', 'bronze', 'copper']);
+  }
+
+  // Yellow family (45-70)
+  if (h >= 45 && h < 70) {
+    if (l > 70) return findAvailable(['lemon', 'butter', 'vanilla']);
+    if (s > 60) return findAvailable(['gold', 'honey', 'mustard']);
+    return findAvailable(['olive', 'khaki', 'sand']);
+  }
+
+  // Green family (70-150)
+  if (h >= 70 && h < 150) {
+    if (l > 70) return findAvailable(['mint', 'sage', 'seafoam']);
+    if (h < 100) return findAvailable(['lime', 'chartreuse', 'spring']);
+    if (s < 30) return findAvailable(['sage', 'moss', 'olive']);
+    if (l > 50) return findAvailable(['emerald', 'jade', 'forest']);
+    return findAvailable(['forest', 'hunter', 'pine']);
+  }
+
+  // Cyan/Teal family (150-200)
+  if (h >= 150 && h < 200) {
+    if (l > 70) return findAvailable(['aqua', 'ice', 'frost']);
+    if (l > 50) return findAvailable(['teal', 'turquoise', 'cyan']);
+    return findAvailable(['ocean', 'deep', 'marine']);
+  }
+
+  // Blue family (200-260)
+  if (h >= 200 && h < 260) {
+    if (l > 70) return findAvailable(['sky', 'powder', 'baby']);
+    if (s < 30) return findAvailable(['slate', 'steel', 'pewter']);
+    if (l > 60) return findAvailable(['azure', 'cerulean', 'periwinkle']);
+    if (l > 40) return findAvailable(['royal', 'sapphire', 'cobalt']);
+    return findAvailable(['navy', 'midnight', 'indigo']);
+  }
+
+  // Purple/Violet family (260-300)
+  if (h >= 260 && h < 300) {
+    if (l > 70) return findAvailable(['lavender', 'lilac', 'mauve']);
+    if (s < 30) return findAvailable(['plum', 'eggplant', 'wine']);
+    if (l > 50) return findAvailable(['violet', 'amethyst', 'orchid']);
+    return findAvailable(['purple', 'grape', 'mulberry']);
+  }
+
+  // Magenta/Pink family (300-345)
+  if (h >= 300 && h < 345) {
+    if (l > 70) return findAvailable(['pink', 'rose', 'blush']);
+    if (s > 60) return findAvailable(['magenta', 'fuchsia', 'hot']);
+    return findAvailable(['berry', 'wine', 'maroon']);
+  }
+
+  // Fallback
+  return 'unknown';
+}
+
+/**
+ * Detect scale size from existing palettes
+ * Returns 3 for secondary colors (brown, orange, peach, blue, purple, yellow)
+ * Returns 10 for primary colors (green, grey)
+ */
+function detectScaleSize(family, primitiveTokens) {
+  // Check existing similar palettes
+  const secondaryFamilies = ['brown', 'orange', 'peach', 'blue', 'purple', 'yellow'];
+  const primaryFamilies = ['green', 'grey'];
+
+  // Count existing scale for this family
+  const existingCount = Object.keys(primitiveTokens)
+    .filter(name => name.startsWith(`${family}-`))
+    .length;
+
+  if (existingCount > 0) {
+    return existingCount; // Use existing scale size
+  }
+
+  // Determine based on family type
+  if (secondaryFamilies.includes(family)) return 3;
+  if (primaryFamilies.includes(family)) return 10;
+
+  // Check if it's a compound name (e.g., 'info-blue', 'success-green')
+  for (const secondary of secondaryFamilies) {
+    if (family.includes(secondary)) return 3;
+  }
+  for (const primary of primaryFamilies) {
+    if (family.includes(primary)) return 10;
+  }
+
+  // Default to 3 for new palettes
+  return 3;
+}
+
+/**
+ * Detect color family from hex value by analyzing RGB components
+ * Returns base family name (blue, green, orange, red, etc.)
+ */
+function detectColorFamily(hexValue, semanticName) {
+  const rgb = hexToRgb(hexValue);
+  if (!rgb) return null;
+
+  const { r, g, b } = rgb;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
+  // Check if it's greyscale (low saturation)
+  const saturation = max - min;
+  if (saturation < 20) {
+    return null; // Let it match to existing grey
+  }
+
+  // Detect dominant color component
+  const dominantR = r > g && r > b;
+  const dominantG = g > r && g > b;
+  const dominantB = b > r && b > g;
+
+  // Check semantic name for hints
+  const nameLower = semanticName.toLowerCase();
+
+  // Info/Blue family
+  if (nameLower.includes('info') || (dominantB && b - r > 50)) {
+    return 'blue';
+  }
+
+  // Success/Green family
+  if (nameLower.includes('success') || (dominantG && !dominantR && !dominantB)) {
+    return 'green';
+  }
+
+  // Warning/Orange family
+  if (nameLower.includes('warning') || (r > 200 && g > 100 && g < 200 && b < 100)) {
+    return 'orange';
+  }
+
+  // Error/Red/Peach family
+  if (nameLower.includes('error') || (dominantR && r - g > 50)) {
+    return 'peach';
+  }
+
+  // Default: can't determine
+  return null;
+}
+
+/**
+ * Get the next available number in a color family scale
+ * For example, if blue-00, blue-01, blue-02 exist, returns 03
+ */
+function getNextScaleNumber(family, primitiveTokens) {
+  const existing = Object.keys(primitiveTokens)
+    .filter(name => name.startsWith(`${family}-`))
+    .map(name => {
+      const match = name.match(new RegExp(`^${family}-(\\d+)$`));
+      return match ? parseInt(match[1], 10) : -1;
+    })
+    .filter(n => n >= 0);
+
+  if (existing.length === 0) return '00';
+
+  const max = Math.max(...existing);
+  const next = max + 1;
+  return next.toString().padStart(2, '0');
+}
+
+/**
+ * Extract and group semantic color sets (e.g., Info with main/light/dark)
+ * Returns groups like: { Info: [{ name: 'infoMain', value: '#437dcf' }, ...] }
+ */
+function extractSemanticColorGroups(colorsData) {
+  const groups = {};
+
+  function processGroup(groupData, groupPath = []) {
+    for (const [key, value] of Object.entries(groupData)) {
+      if (value.$value !== undefined) {
+        const tokenValue = value.$value;
+        const refMatch = tokenValue.match(/^\{(.+)\}$/);
+
+        // Only process hardcoded values (not references)
+        if (!refMatch) {
+          const parentGroup = groupPath[groupPath.length - 1] || 'Other';
+          if (!groups[parentGroup]) {
+            groups[parentGroup] = [];
+          }
+          groups[parentGroup].push({
+            name: key,
+            value: tokenValue,
+            fullPath: [...groupPath, key].join('-')
+          });
+        }
+      } else if (typeof value === 'object' && value !== null) {
+        // Recurse into nested groups
+        processGroup(value, [...groupPath, key]);
+      }
+    }
+  }
+
+  // Process semantic groups
+  const SEMANTIC_GROUPS = ['Text', 'System'];
+  for (const group of SEMANTIC_GROUPS) {
+    if (colorsData[group]) {
+      processGroup(colorsData[group], [group]);
+    }
+  }
+
+  return groups;
+}
+
+/**
+ * Sort colors in a group by lightness (light → dark)
+ */
+function sortByLightness(colorGroup) {
+  return colorGroup.sort((a, b) => {
+    const rgbA = hexToRgb(a.value);
+    const rgbB = hexToRgb(b.value);
+    if (!rgbA || !rgbB) return 0;
+
+    const lightnessA = (Math.max(rgbA.r, rgbA.g, rgbA.b) + Math.min(rgbA.r, rgbA.g, rgbA.b)) / 2;
+    const lightnessB = (Math.max(rgbB.r, rgbB.g, rgbB.b) + Math.min(rgbB.r, rgbB.g, rgbB.b)) / 2;
+
+    return lightnessB - lightnessA; // Descending (light to dark)
+  });
+}
+
+/**
+ * Extract hardcoded semantic values and generate complete color palettes
+ * NEW APPROACH: Groups semantic colors together, assigns creative pure color names,
+ * and generates complete 3-level palettes
+ */
+function extractHardcodedSemanticValues(colorsData, primitiveTokens) {
+  const hardcodedPrimitives = {};
+  const mappings = {}; // hex value -> primitive name
+
+  // Step 1: Extract semantic color groups
+  const semanticGroups = extractSemanticColorGroups(colorsData);
+
+  // Step 2: Process each group
+  for (const [groupName, colors] of Object.entries(semanticGroups)) {
+    if (colors.length === 0) continue;
+
+    // Try to match all colors to existing primitives first
+    const allMatched = colors.every(color => {
+      const closest = findClosestPrimitive(color.value, primitiveTokens, 30);
+      if (closest) {
+        mappings[color.value] = closest.name;
+        console.log(`  📍 Mapping ${color.fullPath} (${color.value}) → ${closest.name}`);
+        return true;
+      }
+      return false;
+    });
+
+    if (allMatched) continue; // All colors matched, no need to create new palette
+
+    // Step 3: Need to create a new palette for this group
+    const hexValues = colors.map(c => c.value);
+    const pureColorName = getPureColorName(hexValues, { ...primitiveTokens, ...hardcodedPrimitives });
+
+    console.log(`  🎨 Creating new "${pureColorName}" palette for ${groupName} group (${colors.length} colors)`);
+
+    // Step 4: Sort colors by lightness and generate 3-level palette
+    const sortedColors = sortByLightness(colors);
+
+    // Generate palette with proper indices (00, 01, 02)
+    sortedColors.forEach((color, index) => {
+      const scaleIndex = index.toString().padStart(2, '0');
+      const primitiveName = `${pureColorName}-${scaleIndex}`;
+
+      hardcodedPrimitives[primitiveName] = color.value;
+      mappings[color.value] = primitiveName;
+
+      console.log(`    → ${primitiveName}: ${color.value} (${color.name})`);
+    });
+  }
+
+  return { hardcodedPrimitives, mappings };
+}
+
+/**
  * Transform Colors.json
- * Only processes PRIMITIVE color tokens (pure scales without semantic meaning)
- *
- * Primitive groups (included):
- * - Green, Greyscale: Pure color scales (green01-10, grey01-10)
- * - Secondary: Color palette scales (Brown, Orange, Peach, Blue, Purple, Yellow)
- *
- * Semantic groups (excluded - should be in semantic-colors.ts):
- * - Primary, B&W, Text, Brand, System
+ * Processes both PRIMITIVE and SEMANTIC color tokens
  */
 function transformColors() {
   console.log('🎨 Transforming Colors...');
@@ -130,7 +541,7 @@ function transformColors() {
   const colorsPath = path.join(IMPORTED_DIR, 'Colors.json');
   const colorsData = JSON.parse(fs.readFileSync(colorsPath, 'utf-8'));
 
-  // Only process primitive color groups (pure scales without semantic meaning)
+  // Process primitive color groups (pure scales without semantic meaning)
   const PRIMITIVE_COLOR_GROUPS = ['Green', 'Greyscale', 'Secondary', 'Base'];
   const primitiveData = {};
 
@@ -140,7 +551,14 @@ function transformColors() {
     }
   }
 
-  const flatTokens = flattenTokens(primitiveData);
+  let flatTokens = flattenTokens(primitiveData);
+
+  // Extract hardcoded values from semantic tokens and add them as properly-named primitives
+  const { hardcodedPrimitives, mappings } = extractHardcodedSemanticValues(colorsData, flatTokens);
+  flatTokens = { ...flatTokens, ...hardcodedPrimitives };
+
+  const primitiveCount = Object.keys(flatTokens).length;
+  const hardcodedCount = Object.keys(hardcodedPrimitives).length;
 
   // Generate TypeScript
   let ts = `/**
@@ -185,8 +603,169 @@ export type PrimitiveColorToken = keyof typeof primitiveColors;
   fs.writeFileSync(path.join(colorsDir, 'colors.ts'), ts);
   fs.writeFileSync(path.join(colorsDir, 'colors.css'), css);
 
-  console.log(`  ✅ Generated ${Object.keys(flatTokens).length} color tokens`);
-  return flatTokens;
+  console.log(`  ✅ Generated ${primitiveCount} primitive color tokens`);
+  if (hardcodedCount > 0) {
+    console.log(`     (includes ${hardcodedCount} primitives created from hardcoded semantic values)`);
+  }
+  return { primitives: flatTokens, colorsData, mappings };
+}
+
+/**
+ * Convert Figma reference like "{Green.green05}" to primitive token name "green-05"
+ */
+function figmaRefToPrimitiveName(ref, primitiveTokens) {
+  const match = ref.match(/^\{(.+)\}$/);
+  if (!match) return null;
+
+  const [group, token] = match[1].split('.');
+
+  // Try different name conversions to find the primitive
+  const candidates = [
+    // Direct conversion: Green.green05 → green-05
+    `${group.toLowerCase()}-${token.replace(/([A-Z])/g, '-$1').replace(/(\d+)/g, '-$1').toLowerCase()}`.replace(/--+/g, '-'),
+    // Simpler: green05 → green-05
+    token.replace(/([a-z])(\d)/g, '$1-$2').toLowerCase(),
+    // Handle grey vs greyscale
+    token.replace(/grey/i, 'grey').replace(/([a-z])(\d)/g, '$1-$2').toLowerCase(),
+  ];
+
+  for (const candidate of candidates) {
+    if (primitiveTokens[candidate]) {
+      return candidate;
+    }
+  }
+
+  console.warn(`⚠️  Could not resolve reference ${ref} to a primitive token`);
+  return null;
+}
+
+/**
+ * Transform semantic colors - ALL semantic tokens reference primitives
+ */
+function transformSemanticColors(colorsData, primitiveTokens, mappings = {}) {
+  console.log('🎨 Transforming Semantic Colors...');
+
+  const SEMANTIC_GROUPS = ['Primary', 'Text', 'Brand', 'System'];
+  const semanticGroups = {};
+
+  // Build a reverse lookup: value -> primitive name (for hardcoded values)
+  // Use mappings first (from color family detection), then fallback to primitiveTokens
+  const valueToPrimitive = { ...mappings };
+  for (const [name, value] of Object.entries(primitiveTokens)) {
+    if (!valueToPrimitive[value]) {
+      valueToPrimitive[value] = name;
+    }
+  }
+
+  function processSemanticGroup(groupData, groupName, prefix = '') {
+    const result = {};
+
+    for (const [key, value] of Object.entries(groupData)) {
+      const currentPath = prefix ? `${prefix}-${key}` : key;
+      const cleanedKey = cleanTokenName(key);
+
+      if (value.$value !== undefined) {
+        const tokenValue = value.$value;
+        const refMatch = tokenValue.match(/^\{(.+)\}$/);
+
+        if (refMatch) {
+          // It's a reference like {Green.green05} - resolve to primitive name
+          const primitiveName = figmaRefToPrimitiveName(tokenValue, primitiveTokens);
+          if (primitiveName) {
+            result[cleanedKey] = primitiveName;
+          } else {
+            console.warn(`⚠️  Could not resolve reference ${tokenValue}`);
+          }
+        } else {
+          // It's a hardcoded value - find the primitive we created for it
+          const primitiveName = valueToPrimitive[tokenValue];
+          if (primitiveName) {
+            result[cleanedKey] = primitiveName;
+          } else {
+            console.warn(`⚠️  Hardcoded value ${tokenValue} not found in primitives for ${cleanedKey}`);
+          }
+        }
+      } else if (typeof value === 'object' && value !== null) {
+        // Nested group (like System.Info)
+        const nested = processSemanticGroup(value, groupName, currentPath);
+        Object.assign(result, nested);
+      }
+    }
+
+    return result;
+  }
+
+  // Process each semantic group
+  for (const group of SEMANTIC_GROUPS) {
+    if (colorsData[group]) {
+      semanticGroups[group] = processSemanticGroup(colorsData[group], group);
+    }
+  }
+
+  // Generate TypeScript
+  let ts = `/**
+ * Semantic Color Tokens - Auto-generated from Figma
+ * Source: imported-from-figma/Colors.json
+ * DO NOT EDIT MANUALLY - Run 'npm run tokens:transform' to regenerate
+ *
+ * Semantic tokens represent the intent and purpose of colors in the design system.
+ * ALL semantic tokens reference primitive colors - no hardcoded hex values.
+ */
+
+import { primitiveColors } from '../../primitive-tokens/colors/colors';
+
+`;
+
+  // Generate each semantic group
+  for (const [groupName, tokens] of Object.entries(semanticGroups)) {
+    const constName = `${groupName.toLowerCase()}Colors`;
+
+    ts += `export const ${constName} = {\n`;
+    for (const [key, primitiveRef] of Object.entries(tokens)) {
+      ts += `  '${key}': primitiveColors['${primitiveRef}'],\n`;
+    }
+    ts += `} as const;\n\n`;
+  }
+
+  // Generate union type
+  ts += `export type SemanticColorToken = \n`;
+  for (const [groupName] of Object.entries(semanticGroups)) {
+    const constName = `${groupName.toLowerCase()}Colors`;
+    ts += `  | keyof typeof ${constName}\n`;
+  }
+  ts = ts.trimEnd() + ';\n';
+
+  // Generate CSS
+  let css = `/**
+ * Semantic Color Tokens - Auto-generated from Figma
+ * Source: imported-from-figma/Colors.json
+ * DO NOT EDIT MANUALLY - Run 'npm run tokens:transform' to regenerate
+ */
+
+:root {
+`;
+
+  for (const [groupName, tokens] of Object.entries(semanticGroups)) {
+    css += `  /* ${groupName} Colors */\n`;
+    for (const [key, primitiveRef] of Object.entries(tokens)) {
+      css += `  --${groupName.toLowerCase()}-${key}: var(--primitive-${primitiveRef});\n`;
+    }
+    css += `\n`;
+  }
+
+  css += `}\n`;
+
+  // Write files
+  const semanticColorsDir = path.join(SEMANTIC_OUTPUT_DIR, 'colors');
+  fs.mkdirSync(semanticColorsDir, { recursive: true });
+
+  fs.writeFileSync(path.join(semanticColorsDir, 'colors.ts'), ts);
+  fs.writeFileSync(path.join(semanticColorsDir, 'colors.css'), css);
+
+  const totalSemanticTokens = Object.values(semanticGroups).reduce((sum, group) => sum + Object.keys(group).length, 0);
+  console.log(`  ✅ Generated ${totalSemanticTokens} semantic color tokens (all reference primitives)`);
+
+  return semanticGroups;
 }
 
 /**
@@ -392,11 +971,12 @@ function displaySemanticGuidance(semanticStatus) {
  * Main transformation
  */
 function main() {
-  console.log('🚀 Transforming Figma Tokens to Primitives\n');
+  console.log('🚀 Transforming Figma Tokens\n');
   console.log('═'.repeat(50) + '\n');
 
   try {
-    const colors = transformColors();
+    // Transform primitives
+    const { primitives: colorPrimitives, colorsData, mappings } = transformColors();
     const radius = transformRadius();
     const spacing = transformSpacing();
     generateIndex();
@@ -405,9 +985,13 @@ function main() {
     console.log('✅ Primitive tokens transformation complete!');
     console.log('\n📁 Files generated in: src/primitive-tokens/');
 
-    // Check for semantic tokens and display guidance
-    const semanticStatus = checkSemanticTokens();
-    displaySemanticGuidance(semanticStatus);
+    // Transform semantics
+    console.log('\n' + '═'.repeat(50) + '\n');
+    const semanticColors = transformSemanticColors(colorsData, colorPrimitives, mappings);
+
+    console.log('\n' + '═'.repeat(50));
+    console.log('✅ Semantic tokens transformation complete!');
+    console.log('\n📁 Files generated in: src/semantic-tokens/');
 
   } catch (error) {
     console.error('❌ Error:', error.message);

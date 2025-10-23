@@ -18,8 +18,9 @@ export default {
   // Input/Output Directories
   // ============================================================================
 
-  inputDir: './imported-from-figma',  // Where you place Figma JSON exports
-  outputDir: './src/figma-tokens',    // Where tokens are generated
+  inputDir: './imported-from-figma',     // Where you place Figma JSON exports
+  outputDir: './src/primitive-tokens',   // Where primitive tokens are generated
+  semanticDir: './src/semantic-tokens',  // Where semantic tokens are generated (manual curation)
 
   // ============================================================================
   // Semantic Token Generation
