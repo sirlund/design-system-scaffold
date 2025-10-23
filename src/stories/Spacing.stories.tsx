@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { primitiveSpacing, primitiveSizes } from '../figma-tokens/spacing/spacing';
-import '../figma-tokens/spacing/spacing.css';
+import { primitiveSpacing, primitiveSize } from '../primitive-tokens/spacing/spacing';
+import '../primitive-tokens/spacing/spacing.css';
 
 const meta = {
   title: 'Design Tokens/Spacing',
@@ -53,7 +53,7 @@ export const AllSizes: Story = {
       <p style={{ color: '#666', marginBottom: '32px' }}>
         Primitive size tokens generated from Figma.
       </p>
-      {Object.entries(primitiveSizes).map(([name, value]) => (
+      {Object.entries(primitiveSize).map(([name, value]) => (
         <SpacingItem key={name} name={name} value={value} />
       ))}
     </div>

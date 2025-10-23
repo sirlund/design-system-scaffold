@@ -19,7 +19,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const IMPORTED_DIR = path.join(__dirname, '../imported-from-figma');
-const OUTPUT_DIR = path.join(__dirname, '../src/figma-tokens');
+const PRIMITIVE_OUTPUT_DIR = path.join(__dirname, '../src/primitive-tokens');
+const SEMANTIC_OUTPUT_DIR = path.join(__dirname, '../src/semantic-tokens');
 
 /**
  * Resolve token references like "{Green.green05}" to actual values
@@ -178,7 +179,7 @@ export type PrimitiveColorToken = keyof typeof primitiveColors;
   css += `}\n`;
 
   // Write files
-  const colorsDir = path.join(OUTPUT_DIR, 'colors');
+  const colorsDir = path.join(PRIMITIVE_OUTPUT_DIR, 'colors');
   fs.mkdirSync(colorsDir, { recursive: true });
 
   fs.writeFileSync(path.join(colorsDir, 'colors.ts'), ts);
@@ -236,7 +237,7 @@ export type PrimitiveRadiusToken = keyof typeof primitiveRadius;
   css += `}\n`;
 
   // Write files
-  const radiusDir = path.join(OUTPUT_DIR, 'radius');
+  const radiusDir = path.join(PRIMITIVE_OUTPUT_DIR, 'radius');
   fs.mkdirSync(radiusDir, { recursive: true });
 
   fs.writeFileSync(path.join(radiusDir, 'radius.ts'), ts);
@@ -324,7 +325,7 @@ export type PrimitiveSizeToken = keyof typeof primitiveSize;
   css += `}\n`;
 
   // Write files
-  const spacingDir = path.join(OUTPUT_DIR, 'spacing');
+  const spacingDir = path.join(PRIMITIVE_OUTPUT_DIR, 'spacing');
   fs.mkdirSync(spacingDir, { recursive: true });
 
   fs.writeFileSync(path.join(spacingDir, 'spacing.ts'), ts);
@@ -350,7 +351,7 @@ export * from './radius/radius';
 export * from './spacing/spacing';
 `;
 
-  fs.writeFileSync(path.join(OUTPUT_DIR, 'index.ts'), indexTs);
+  fs.writeFileSync(path.join(PRIMITIVE_OUTPUT_DIR, 'index.ts'), indexTs);
   console.log('  ✅ Generated index.ts');
 }
 
@@ -358,20 +359,14 @@ export * from './spacing/spacing';
  * Check if semantic tokens exist
  */
 function checkSemanticTokens() {
-  const semanticDir = path.join(__dirname, '../src/design-tokens');
-  const semanticColorsPath = path.join(semanticDir, 'semantic-colors.ts');
-  const semanticSpacingPath = path.join(semanticDir, 'semantic-spacing.ts');
-  const semanticRadiusPath = path.join(semanticDir, 'semantic-radius.ts');
+  const semanticColorsPath = path.join(SEMANTIC_OUTPUT_DIR, 'colors/colors.ts');
 
-  const hasSemanticColors = fs.existsSync(semanticColorsPath);
-  const hasSemanticSpacing = fs.existsSync(semanticSpacingPath);
-  const hasSemanticRadius = fs.existsSync(semanticRadiusPath);
+  // For now, just check if semantic colors exist
+  // Later we'll generate these automatically
+  const hasSemanticTokens = fs.existsSync(semanticColorsPath);
 
   return {
-    hasAll: hasSemanticColors && hasSemanticSpacing && hasSemanticRadius,
-    hasSemanticColors,
-    hasSemanticSpacing,
-    hasSemanticRadius,
+    hasSemanticTokens,
   };
 }
 
@@ -379,52 +374,18 @@ function checkSemanticTokens() {
  * Display semantic tokens guidance
  */
 function displaySemanticGuidance(semanticStatus) {
-  if (semanticStatus.hasAll) {
+  if (semanticStatus.hasSemanticTokens) {
     console.log('\n✅ Semantic tokens found!');
-    console.log('   Review them in: src/design-tokens/');
-    console.log('   Update them to match your design system needs.');
+    console.log('   Location: src/semantic-tokens/');
     return;
   }
 
   console.log('\n' + '═'.repeat(70));
-  console.log('📋 NEXT STEP: Create Semantic Tokens');
+  console.log('📋 NEXT STEP: Generate Semantic Tokens');
   console.log('═'.repeat(70) + '\n');
 
-  console.log('Primitive tokens are the PRIVATE API (verbose, scale-based).');
-  console.log('Semantic tokens are the PUBLIC API (concise, intent-based).\n');
-
-  console.log('You should now create semantic tokens that reference these primitives:\n');
-
-  if (!semanticStatus.hasSemanticColors) {
-    console.log('  📄 src/design-tokens/semantic-colors.ts');
-    console.log('     - Brand colors (primary, secondary)');
-    console.log('     - Component colors (buttons, inputs, links)');
-    console.log('     - Feedback colors (success, error, warning, info)');
-    console.log('     - Surface colors (backgrounds, dividers)');
-    console.log('     - Text colors (primary, secondary, disabled)\n');
-  }
-
-  if (!semanticStatus.hasSemanticSpacing) {
-    console.log('  📄 src/design-tokens/semantic-spacing.ts');
-    console.log('     - Layout spacing (page gutter, section gap)');
-    console.log('     - Component spacing (padding, gaps, margins)');
-    console.log('     - Component sizes (buttons, inputs, icons)\n');
-  }
-
-  if (!semanticStatus.hasSemanticRadius) {
-    console.log('  📄 src/design-tokens/semantic-radius.ts');
-    console.log('     - Basic radii (sm, md, lg, full)');
-    console.log('     - Component radii (button, card, modal)\n');
-  }
-
-  console.log('Example semantic token:');
-  console.log('  ❌ DON\'T: buttonPrimary: \'#8ccc52\'  (hardcoded)');
-  console.log('  ✅ DO:    buttonPrimary: primitiveColors[\'green-06\']  (references primitive)\n');
-
-  console.log('After creating semantic tokens:');
-  console.log('  1. Create visualization stories in src/stories/');
-  console.log('  2. Use semantic tokens in your components');
-  console.log('  3. NEVER use primitive tokens directly in components\n');
+  console.log('Semantic tokens will be auto-generated from Figma in the next version.');
+  console.log('For now, primitive tokens are ready to use!\n');
 }
 
 /**
@@ -442,7 +403,7 @@ function main() {
 
     console.log('\n' + '═'.repeat(50));
     console.log('✅ Primitive tokens transformation complete!');
-    console.log('\n📁 Files generated in: src/figma-tokens/');
+    console.log('\n📁 Files generated in: src/primitive-tokens/');
 
     // Check for semantic tokens and display guidance
     const semanticStatus = checkSemanticTokens();

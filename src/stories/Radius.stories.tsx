@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { primitiveRadius } from '../figma-tokens/radius/radius';
-import '../figma-tokens/radius/radius.css';
+import { primitiveRadius } from '../primitive-tokens/radius/radius';
+import '../primitive-tokens/radius/radius.css';
 
 const meta = {
   title: 'Design Tokens/Radius',

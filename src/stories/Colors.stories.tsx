@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { primitiveColors } from '../figma-tokens/colors/colors';
-import '../figma-tokens/colors/colors.css';
+import { primitiveColors } from '../primitive-tokens/colors/colors';
+import '../primitive-tokens/colors/colors.css';
 
 const meta = {
   title: 'Design Tokens/Colors',
