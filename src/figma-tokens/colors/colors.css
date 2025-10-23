@@ -1,0 +1,48 @@
+/**
+ * Color Tokens - Auto-generated from Figma
+ * Source: imported-from-figma/Colors.json
+ * DO NOT EDIT MANUALLY - Run 'npm run tokens:transform' to regenerate
+ */
+
+:root {
+  --primitive-green-01: #fcfff5;
+  --primitive-green-02: #f3fae6;
+  --primitive-green-03: #e8f7cd;
+  --primitive-green-04: #dbf5b3;
+  --primitive-green-05: #a9e079;
+  --primitive-green-06: #8ccc52;
+  --primitive-green-07: #6baa32;
+  --primitive-green-08: #3e7a18;
+  --primitive-green-09: #295c07;
+  --primitive-green-10: #1a4007;
+  --primitive-grey-01: #f7f7f7;
+  --primitive-grey-02: #f5f5f5;
+  --primitive-grey-03: #f0f0f0;
+  --primitive-grey-04: #e6e6e6;
+  --primitive-grey-05: #bfbfbf;
+  --primitive-grey-06: #8c8c8c;
+  --primitive-grey-07: #737373;
+  --primitive-grey-08: #595959;
+  --primitive-grey-09: #404040;
+  --primitive-grey-10: #262626;
+  --primitive-brown-00: #f1eae6;
+  --primitive-brown-01: #e2ccc0;
+  --primitive-brown-02: #c69278;
+  --primitive-orange-00: #f9e7da;
+  --primitive-orange-01: #fcc8a2;
+  --primitive-orange-02: #fba466;
+  --primitive-peach-00: #ffeded;
+  --primitive-peach-01: #f1d9d9;
+  --primitive-peach-02: #ff9696;
+  --primitive-blue-00: #f0f8ff;
+  --primitive-blue-01: #cfdeed;
+  --primitive-blue-02: #95c1ee;
+  --primitive-purple-00: #faf2fe;
+  --primitive-purple-01: #e0c6ec;
+  --primitive-purple-02: #c992e3;
+  --primitive-yellow-00: #fdf8e5;
+  --primitive-yellow-01: #fbf1cf;
+  --primitive-yellow-02: #fde28b;
+  --primitive-base-black: #1a1a1a;
+  --primitive-base-white: #ffffff;
+}

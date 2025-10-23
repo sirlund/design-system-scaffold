@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "storybook": "storybook dev -p 6008",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "tokens:transform": "node scripts/transform-figma-tokens.js"
   },
   "dependencies": {
     "react": "^19.1.1",

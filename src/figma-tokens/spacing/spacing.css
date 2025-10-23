@@ -1,0 +1,28 @@
+/**
+ * Spacing & Size Tokens - Auto-generated from Figma
+ * Source: imported-from-figma/Size&Spacing.json
+ * DO NOT EDIT MANUALLY - Run 'npm run tokens:transform' to regenerate
+ */
+
+:root {
+  /* Spacing Tokens */
+  --primitive-space-none: 0px;
+  --primitive-space-3x-small: 2px;
+  --primitive-space-2x-small: 4px;
+  --primitive-space-x-small: 8px;
+  --primitive-space-small: 12px;
+  --primitive-space-medium: 16px;
+  --primitive-space-large: 20px;
+  --primitive-space-x-large: 24px;
+  --primitive-space-2x-large: 32px;
+  --primitive-space-3x-large: 48px;
+
+  /* Size Tokens */
+  --primitive-size-x-small: 12px;
+  --primitive-size-small: 18px;
+  --primitive-size-medium: 20px;
+  --primitive-size-large: 24px;
+  --primitive-size-x-large: 32px;
+  --primitive-size-2x-large: 48px;
+  --primitive-size-3x-large: 64px;
+}
