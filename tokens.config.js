@@ -12,28 +12,44 @@ export default {
   // ============================================================================
 
   projectName: 'MyDesignSystem',
-  projectPrefix: 'my',  // Used for CSS variable prefixes: --my-color-primary
 
   // ============================================================================
-  // Input/Output Directories
+  // CSS Variable Prefixes (ACTIVE - used by transform script)
+  // ============================================================================
+
+  // Define prefixes for each token tier
+  // Examples:
+  //   primitivePrefix: 'primitive' → --primitive-green-05
+  //   primitivePrefix: '' → --green-05
+  //   semanticPrefix: 'ds' → --ds-primary-main
+  //   componentPrefix: 'c' → --c-button-bg
+
+  cssPrefix: {
+    primitive: 'primitive',  // Prefix for primitive tokens (can be blank '')
+    semantic: '',            // Prefix for semantic tokens (blank = no prefix)
+    component: '',           // Prefix for component tokens (blank = no prefix)
+  },
+
+  // ============================================================================
+  // Input/Output Directories (ACTIVE - used by transform script)
   // ============================================================================
 
   inputDir: './imported-from-figma',     // Where you place Figma JSON exports
   outputDir: './src/primitive-tokens',   // Where primitive tokens are generated
-  semanticDir: './src/semantic-tokens',  // Where semantic tokens are generated (manual curation)
+  semanticDir: './src/semantic-tokens',  // Where semantic tokens are generated
 
   // ============================================================================
-  // Semantic Token Generation
+  // Semantic Token Generation (ACTIVE - used by transform script)
   // ============================================================================
 
   // Controls how semantic tokens are generated:
   // - false: Manual curation only (you create semantic tokens by hand)
-  // - 'suggest': Agent suggests semantics, you review and approve
+  // - 'suggest': Agent suggests semantics, you review and approve (generates report)
   // - true: Full auto-generation (future feature)
   generateSemantics: 'suggest',
 
   // ============================================================================
-  // Semantic Suggestions (only when generateSemantics = 'suggest')
+  // Semantic Suggestions (ACTIVE - used by transform script)
   // ============================================================================
 
   semanticSuggestions: {
@@ -43,7 +59,7 @@ export default {
   },
 
   // ============================================================================
-  // Token Classification Rules
+  // Token Classification Rules (ACTIVE - used by transform script)
   // ============================================================================
 
   classificationRules: {
@@ -82,29 +98,40 @@ export default {
   },
 
   // ============================================================================
-  // Name Transformations
+  // Name Transformations (PARTIALLY ACTIVE - reorderSemanticTokens implemented)
   // ============================================================================
 
   transformations: {
-    // Remove redundant prefixes from Figma exports
+    // Remove redundant prefixes from Figma exports (INACTIVE)
     // Example: "Green-green01" → "green-01"
     removeRedundantPrefixes: true,
 
-    // Manual name mappings for edge cases
+    // Reorder semantic tokens to put category first (ACTIVE)
+    // Follows industry best practices from Atlassian, Carbon, etc.
+    // Examples:
+    //   primary-black-text → text-primary-black
+    //   secondary-text → text-secondary
+    //   primary-main → primary-main (no change)
+    reorderSemanticTokens: true,
+
+    // Keywords that should be moved to the front when found (ACTIVE)
+    categoryKeywords: ['text', 'background', 'border', 'surface', 'icon'],
+
+    // Manual name mappings for edge cases (INACTIVE)
     nameMap: {
       // 'Figma-name': 'output-name',
       // Example: 'Base-black': 'base-black'
     },
 
-    // Case format for generated tokens
+    // Case format for generated tokens (INACTIVE)
     caseFormat: {
-      primitives: 'kebab-case',  // 'kebab-case' | 'camelCase' | 'PascalCase'
+      primitives: 'camelCase',  // 'kebab-case' | 'camelCase' | 'PascalCase'
       semantics: 'kebab-case',
     },
   },
 
   // ============================================================================
-  // Output Templates
+  // Output Templates (INACTIVE - not yet implemented)
   // ============================================================================
 
   templates: [
@@ -143,7 +170,7 @@ export default {
   ],
 
   // ============================================================================
-  // Quality Audit
+  // Quality Audit (INACTIVE - not yet implemented)
   // ============================================================================
 
   audit: {
@@ -158,7 +185,7 @@ export default {
   },
 
   // ============================================================================
-  // Validation Rules
+  // Validation Rules (INACTIVE - not yet implemented)
   // ============================================================================
 
   validation: {

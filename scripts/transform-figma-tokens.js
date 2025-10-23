@@ -18,9 +18,83 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const IMPORTED_DIR = path.join(__dirname, '../imported-from-figma');
-const PRIMITIVE_OUTPUT_DIR = path.join(__dirname, '../src/primitive-tokens');
-const SEMANTIC_OUTPUT_DIR = path.join(__dirname, '../src/semantic-tokens');
+// Load configuration
+const configPath = path.join(__dirname, '../tokens.config.js');
+const configModule = await import(`file://${configPath}`);
+const config = configModule.default;
+
+const IMPORTED_DIR = path.join(__dirname, `../${config.inputDir}`);
+const PRIMITIVE_OUTPUT_DIR = path.join(__dirname, `../${config.outputDir}`);
+const SEMANTIC_OUTPUT_DIR = path.join(__dirname, `../${config.semanticDir}`);
+
+/**
+ * Build CSS variable name with appropriate prefix
+ * Examples:
+ *   buildCSSVar('primitive', 'green-05') → '--primitive-green-05' or '--green-05' if prefix is blank
+ *   buildCSSVar('semantic', 'primary-main') → '--primary-main' if semantic prefix is blank
+ */
+function buildCSSVar(tier, tokenName) {
+  const prefix = config.cssPrefix[tier];
+  return prefix ? `--${prefix}-${tokenName}` : `--${tokenName}`;
+}
+
+/**
+ * Classify a token as 'primitive' or 'semantic' based on its name
+ * Uses config.classificationRules to determine token type
+ */
+function classifyToken(tokenName) {
+  const { semanticKeywords, primitivePatterns } = config.classificationRules;
+
+  // Check if it matches primitive patterns (e.g., green-05, spacing-16)
+  for (const pattern of primitivePatterns) {
+    if (pattern.test(tokenName)) {
+      return 'primitive';
+    }
+  }
+
+  // Check if name contains semantic keywords
+  const nameLower = tokenName.toLowerCase();
+  for (const keyword of semanticKeywords) {
+    if (nameLower.includes(keyword)) {
+      return 'semantic';
+    }
+  }
+
+  // Default: if it has numbers at the end, likely primitive, otherwise semantic
+  return /[-]?\d+$/.test(tokenName) ? 'primitive' : 'semantic';
+}
+
+/**
+ * Analyze token to determine if it should be auto-generated as semantic
+ * Returns confidence level: 'low', 'medium', 'high', or null
+ */
+function analyzeSemanticCandidate(tokenName, tokenValue, allTokens) {
+  const classification = classifyToken(tokenName);
+
+  if (classification === 'primitive') {
+    return null; // Not a semantic candidate
+  }
+
+  // Check if it's already a reference (good sign for semantic)
+  const isReference = typeof tokenValue === 'string' && tokenValue.match(/^\{.+\}$/);
+
+  // High confidence: has semantic keyword AND is a reference
+  if (isReference) {
+    return 'high';
+  }
+
+  // Medium confidence: has semantic keyword but hardcoded value
+  const { semanticKeywords } = config.classificationRules;
+  const nameLower = tokenName.toLowerCase();
+  const hasSemanticKeyword = semanticKeywords.some(keyword => nameLower.includes(keyword));
+
+  if (hasSemanticKeyword) {
+    return 'medium';
+  }
+
+  // Low confidence: looks semantic but unclear
+  return 'low';
+}
 
 /**
  * Resolve token references like "{Green.green05}" to actual values
@@ -80,6 +154,39 @@ function cleanTokenName(name) {
     .replace(/([a-z])([A-Z])/g, '$1-$2')
     .replace(/([a-z])(\d)/g, '$1-$2') // Add dash before numbers (brown00 → brown-00)
     .toLowerCase();
+}
+
+/**
+ * Reorder semantic token names to put category first (industry best practice)
+ * Follows patterns from Atlassian, Carbon, etc.
+ * Examples:
+ * - "primary-black-text" → "text-primary-black"
+ * - "secondary-text" → "text-secondary"
+ * - "primary-main" → "primary-main" (no change)
+ * - "disabled-text" → "text-disabled"
+ */
+function reorderSemanticToken(tokenName) {
+  if (!config.transformations?.reorderSemanticTokens) {
+    return tokenName; // Feature disabled
+  }
+
+  const keywords = config.transformations.categoryKeywords || [];
+  const parts = tokenName.split('-');
+
+  // Find if any category keyword exists in the parts
+  for (const keyword of keywords) {
+    const keywordIndex = parts.indexOf(keyword);
+
+    if (keywordIndex > 0) {
+      // Found keyword not at the start - move it to front
+      const removed = parts.splice(keywordIndex, 1);
+      parts.unshift(removed[0]);
+      return parts.join('-');
+    }
+  }
+
+  // No reordering needed
+  return tokenName;
 }
 
 /**
@@ -591,7 +698,7 @@ export type PrimitiveColorToken = keyof typeof primitiveColors;
 `;
 
   for (const [key, value] of Object.entries(flatTokens)) {
-    css += `  --primitive-${key}: ${value};\n`;
+    css += `  ${buildCSSVar('primitive', key)}: ${value};\n`;
   }
 
   css += `}\n`;
@@ -662,7 +769,9 @@ function transformSemanticColors(colorsData, primitiveTokens, mappings = {}) {
 
     for (const [key, value] of Object.entries(groupData)) {
       const currentPath = prefix ? `${prefix}-${key}` : key;
-      const cleanedKey = cleanTokenName(key);
+      let cleanedKey = cleanTokenName(key);
+      // Apply reordering for best practices (e.g., primary-black-text → text-primary-black)
+      cleanedKey = reorderSemanticToken(cleanedKey);
 
       if (value.$value !== undefined) {
         const tokenValue = value.$value;
@@ -748,7 +857,8 @@ import { primitiveColors } from '../../primitive-tokens/colors/colors';
   for (const [groupName, tokens] of Object.entries(semanticGroups)) {
     css += `  /* ${groupName} Colors */\n`;
     for (const [key, primitiveRef] of Object.entries(tokens)) {
-      css += `  --${groupName.toLowerCase()}-${key}: var(--primitive-${primitiveRef});\n`;
+      // Use key directly - it already has proper naming from TypeScript generation
+      css += `  ${buildCSSVar('semantic', key)}: var(${buildCSSVar('primitive', primitiveRef)});\n`;
     }
     css += `\n`;
   }
@@ -810,7 +920,7 @@ export type PrimitiveRadiusToken = keyof typeof primitiveRadius;
 `;
 
   for (const [key, value] of Object.entries(radiusTokens)) {
-    css += `  --primitive-${key}: ${value};\n`;
+    css += `  ${buildCSSVar('primitive', key)}: ${value};\n`;
   }
 
   css += `}\n`;
@@ -892,13 +1002,13 @@ export type PrimitiveSizeToken = keyof typeof primitiveSize;
 `;
 
   for (const [key, value] of Object.entries(spacingTokens)) {
-    css += `  --primitive-${key}: ${value};\n`;
+    css += `  ${buildCSSVar('primitive', key)}: ${value};\n`;
   }
 
   css += `\n  /* Size Tokens */\n`;
 
   for (const [key, value] of Object.entries(sizeTokens)) {
-    css += `  --primitive-${key}: ${value};\n`;
+    css += `  ${buildCSSVar('primitive', key)}: ${value};\n`;
   }
 
   css += `}\n`;
@@ -968,6 +1078,105 @@ function displaySemanticGuidance(semanticStatus) {
 }
 
 /**
+ * Generate semantic token suggestions report
+ * Analyzes all tokens and suggests which ones should be semantic
+ */
+function generateSemanticSuggestions(colorsData, primitiveTokens) {
+  if (!config.semanticSuggestions.enabled) {
+    return;
+  }
+
+  console.log('💡 Analyzing tokens for semantic suggestions...');
+
+  const suggestions = {
+    high: [],
+    medium: [],
+    low: []
+  };
+
+  // Analyze all color groups
+  function analyzeGroup(groupData, groupPath = []) {
+    for (const [key, value] of Object.entries(groupData)) {
+      const currentPath = [...groupPath, key];
+      const tokenName = currentPath.join('-').toLowerCase();
+
+      if (value.$value !== undefined) {
+        const confidence = analyzeSemanticCandidate(tokenName, value.$value, colorsData);
+        if (confidence && confidence >= config.semanticSuggestions.confidenceThreshold) {
+          suggestions[confidence].push({
+            name: tokenName,
+            value: value.$value,
+            path: currentPath.join('.'),
+            isReference: typeof value.$value === 'string' && value.$value.match(/^\{.+\}$/) !== null
+          });
+        }
+      } else if (typeof value === 'object' && value !== null) {
+        analyzeGroup(value, currentPath);
+      }
+    }
+  }
+
+  // Analyze color data
+  analyzeGroup(colorsData);
+
+  // Generate markdown report
+  let report = `# Semantic Token Suggestions\n\n`;
+  report += `Generated: ${new Date().toISOString()}\n\n`;
+  report += `This report suggests which Figma tokens should be classified as semantic tokens.\n`;
+  report += `Tokens are categorized by confidence level based on naming conventions and structure.\n\n`;
+
+  report += `## Summary\n\n`;
+  report += `- **High Confidence**: ${suggestions.high.length} tokens\n`;
+  report += `- **Medium Confidence**: ${suggestions.medium.length} tokens\n`;
+  report += `- **Low Confidence**: ${suggestions.low.length} tokens\n\n`;
+
+  // High confidence suggestions
+  if (suggestions.high.length > 0) {
+    report += `## High Confidence Suggestions\n\n`;
+    report += `These tokens have semantic keywords AND reference primitive tokens.\n\n`;
+    suggestions.high.forEach(token => {
+      report += `- **\`${token.name}\`**\n`;
+      report += `  - Path: \`${token.path}\`\n`;
+      report += `  - Value: \`${token.value}\`\n`;
+      report += `  - Status: ${token.isReference ? '✅ Already references primitive' : '⚠️ Hardcoded value'}\n\n`;
+    });
+  }
+
+  // Medium confidence suggestions
+  if (suggestions.medium.length > 0) {
+    report += `## Medium Confidence Suggestions\n\n`;
+    report += `These tokens have semantic keywords but use hardcoded values.\n`;
+    report += `**Recommendation**: Convert these to reference primitive tokens.\n\n`;
+    suggestions.medium.forEach(token => {
+      report += `- **\`${token.name}\`**\n`;
+      report += `  - Path: \`${token.path}\`\n`;
+      report += `  - Value: \`${token.value}\`\n`;
+      report += `  - Suggested Action: Find matching primitive or create one\n\n`;
+    });
+  }
+
+  // Low confidence suggestions
+  if (suggestions.low.length > 0) {
+    report += `## Low Confidence Suggestions\n\n`;
+    report += `These tokens might be semantic but need manual review.\n\n`;
+    suggestions.low.forEach(token => {
+      report += `- **\`${token.name}\`**\n`;
+      report += `  - Path: \`${token.path}\`\n`;
+      report += `  - Value: \`${token.value}\`\n\n`;
+    });
+  }
+
+  // Write report
+  const reportPath = path.join(__dirname, '..', config.semanticSuggestions.outputFile);
+  const reportDir = path.dirname(reportPath);
+  fs.mkdirSync(reportDir, { recursive: true });
+  fs.writeFileSync(reportPath, report);
+
+  console.log(`  ✅ Semantic suggestions report generated: ${config.semanticSuggestions.outputFile}`);
+  console.log(`     High: ${suggestions.high.length}, Medium: ${suggestions.medium.length}, Low: ${suggestions.low.length}`);
+}
+
+/**
  * Main transformation
  */
 function main() {
@@ -992,6 +1201,12 @@ function main() {
     console.log('\n' + '═'.repeat(50));
     console.log('✅ Semantic tokens transformation complete!');
     console.log('\n📁 Files generated in: src/semantic-tokens/');
+
+    // Generate semantic suggestions if enabled
+    if (config.generateSemantics === 'suggest') {
+      console.log('\n' + '═'.repeat(50) + '\n');
+      generateSemanticSuggestions(colorsData, colorPrimitives);
+    }
 
   } catch (error) {
     console.error('❌ Error:', error.message);
